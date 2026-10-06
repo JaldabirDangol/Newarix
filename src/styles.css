@@ -1,0 +1,172 @@
+@import 'tailwindcss';
+
+/*
+  Newarix design tokens.
+  Dark ("ink night") is the default; [data-theme='light'] switches to paper.
+  Accent is fansub-subtitle yellow.
+*/
+:root {
+  --bg: #11121b;
+  --surface: #191b27;
+  --raised: #232637;
+  --line: #2f3247;
+  --text: #ecebf5;
+  --muted: #a09fb7;
+  --accent: #ffd84d;
+  --accent-text: #ffd84d;
+  --on-accent: #1b1600;
+  --danger: #ff7a85;
+  /* Status colors are validated for colorblind separation on --surface. */
+  --st-current: #2f9ad8;
+  --st-completed: #2aa86a;
+  --st-planned: #8c78ea;
+  --st-hold: #c9821a;
+  --st-dropped: #e0506a;
+  --chart: #ffd84d;
+  --shadow: 0 10px 30px -12px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --bg: #f2f3f7;
+  --surface: #ffffff;
+  --raised: #e7e9f1;
+  --line: #d3d6e2;
+  --text: #151726;
+  --muted: #555870;
+  --accent: #ffd84d;
+  --accent-text: #8a6500;
+  --on-accent: #1b1600;
+  --danger: #c4283a;
+  --st-current: #0b7fc4;
+  --st-completed: #138a52;
+  --st-planned: #6a4fd6;
+  --st-hold: #a86a00;
+  --st-dropped: #c42870;
+  --chart: #b8860b;
+  --shadow: 0 10px 30px -14px rgb(20 22 40 / 0.35);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-text: var(--accent-text);
+  --color-on-accent: var(--on-accent);
+  --color-danger: var(--danger);
+  --font-display: 'Dela Gothic One', 'Hanken Grotesk', system-ui, sans-serif;
+  --font-sans:
+    'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --shadow-card: var(--shadow);
+}
+
+html {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Horizontal poster rows: hide the scrollbar but keep scrolling. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Subtitle treatment for the hero line, like a fansub caption. */
+.subtitle-line {
+  color: var(--accent);
+  font-weight: 700;
+  text-shadow:
+    0 0 2px #000,
+    0 0 2px #000,
+    1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000;
+}
+
+.skeleton {
+  background: linear-gradient(
+    100deg,
+    var(--raised) 30%,
+    color-mix(in oklab, var(--raised), var(--text) 6%) 50%,
+    var(--raised) 70%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-rise {
+  animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.loading-bar {
+  animation: loadbar 2.5s cubic-bezier(0.1, 0.7, 0.2, 1) 120ms both;
+}
+
+@keyframes loadbar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(0.85);
+  }
+}

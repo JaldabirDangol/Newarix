@@ -1,0 +1,1420 @@
+{
+  "date": "2026-10-05T14:12:46.021Z",
+  "engine": "axe-core",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21aa"
+  ],
+  "checks": [
+    {
+      "path": "/",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            [
+              ".tracking-widest"
+            ],
+            [
+              "#hero-title"
+            ],
+            [
+              ".mt-2"
+            ],
+            [
+              ".text-accent-text.font-mono.flex"
+            ],
+            [
+              ".gap-x-4 > .text-muted.flex.items-center"
+            ],
+            [
+              ".gap-x-4 > .text-muted:nth-child(3)"
+            ],
+            [
+              ".px-2\\.5.rounded-full.border:nth-child(4)"
+            ],
+            [
+              ".px-2\\.5.rounded-full.border:nth-child(5)"
+            ],
+            [
+              ".px-2\\.5.rounded-full.border:nth-child(6)"
+            ],
+            [
+              ".line-clamp-3"
+            ],
+            [
+              ".subtitle-line"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(8) > .group.block[href$=\"anime/8\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(8) > .group.block[href$=\"anime/8\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(9) > .group.block[href$=\"anime/9\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(9) > .group.block[href$=\"anime/9\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(10) > .group.block[href=\"/anime/10\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(10) > .group.block[href=\"/anime/10\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(11) > .group.block[href=\"/anime/11\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(11) > .group.block[href=\"/anime/11\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(12) > .group.block[href=\"/anime/12\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(12) > .group.block[href=\"/anime/12\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(13) > .group.block[href=\"/anime/13\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(13) > .group.block[href=\"/anime/13\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(14) > .group.block[href=\"/anime/14\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(14) > .group.block[href=\"/anime/14\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(15) > .group.block[href=\"/anime/15\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(15) > .group.block[href=\"/anime/15\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(8) > .group.block[href$=\"anime/8\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(8) > .group.block[href$=\"anime/8\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(9) > .group.block[href$=\"anime/9\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(9) > .group.block[href$=\"anime/9\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(10) > .group.block[href=\"/anime/10\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(10) > .group.block[href=\"/anime/10\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(11) > .group.block[href=\"/anime/11\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(11) > .group.block[href=\"/anime/11\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(12) > .group.block[href=\"/anime/12\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(12) > .group.block[href=\"/anime/12\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(13) > .group.block[href=\"/anime/13\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(13) > .group.block[href=\"/anime/13\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(14) > .group.block[href=\"/anime/14\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(14) > .group.block[href=\"/anime/14\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(15) > .group.block[href=\"/anime/15\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(15) > .group.block[href=\"/anime/15\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(8) > .group.block[href$=\"anime/8\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(8) > .group.block[href$=\"anime/8\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(9) > .group.block[href$=\"anime/9\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(9) > .group.block[href$=\"anime/9\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(10) > .group.block[href=\"/anime/10\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(10) > .group.block[href=\"/anime/10\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(11) > .group.block[href=\"/anime/11\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(11) > .group.block[href=\"/anime/11\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(12) > .group.block[href=\"/anime/12\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(12) > .group.block[href=\"/anime/12\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(13) > .group.block[href=\"/anime/13\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(13) > .group.block[href=\"/anime/13\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(14) > .group.block[href=\"/anime/14\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(14) > .group.block[href=\"/anime/14\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(15) > .group.block[href=\"/anime/15\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(15) > .group.block[href=\"/anime/15\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/307\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/308\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/308\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/309\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/309\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/310\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/310\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/311\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/311\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/312\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/312\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/313\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/313\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/314\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/314\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/315\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/315\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href$=\"manga/7\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href$=\"manga/8\"] > h3"
+            ],
+            [
+              "a[href$=\"manga/8\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href$=\"manga/9\"] > h3"
+            ],
+            [
+              "a[href$=\"manga/9\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/manga/10\"] > h3"
+            ],
+            [
+              "a[href=\"/manga/10\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/manga/11\"] > h3"
+            ],
+            [
+              "a[href=\"/manga/11\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/manga/12\"] > h3"
+            ],
+            [
+              "a[href=\"/manga/12\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/manga/13\"] > h3"
+            ],
+            [
+              "a[href=\"/manga/13\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/manga/14\"] > h3"
+            ],
+            [
+              "a[href=\"/manga/14\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/manga/15\"] > h3"
+            ],
+            [
+              "a[href=\"/manga/15\"] > .mt-0\\.5.truncate"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/anime",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            [
+              "a[href$=\"anime/1\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/2\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/3\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/4\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/5\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/6\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/7\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/8\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/9\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/10\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/11\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/12\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/13\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/14\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/15\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/16\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/17\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/18\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/19\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/20\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/21\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/22\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/23\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/24\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/manga",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            [
+              "a[href$=\"manga/1\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/2\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/3\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/4\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/5\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/6\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/7\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/8\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/9\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/10\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/11\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/12\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/13\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/14\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/15\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/16\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/17\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/18\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/19\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/20\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/21\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/22\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/23\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/24\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/search",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/schedule",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/login",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/signup",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/forgot-password",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/reset-password",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/verify-email",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/anime/2",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/manga/3",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/anime/99999999",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/list",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            [
+              ".px-3\\.5.shrink-0.py-1\\.5:nth-child(2) > .opacity-70.font-mono.text-xs"
+            ],
+            [
+              ".px-3\\.5.shrink-0.py-1\\.5:nth-child(3) > .opacity-70.font-mono.text-xs"
+            ],
+            [
+              ".px-3\\.5.shrink-0.py-1\\.5:nth-child(4) > .opacity-70.font-mono.text-xs"
+            ],
+            [
+              ".px-3\\.5.shrink-0.py-1\\.5:nth-child(5) > .opacity-70.font-mono.text-xs"
+            ],
+            [
+              ".px-3\\.5.shrink-0.py-1\\.5:nth-child(6) > .opacity-70.font-mono.text-xs"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/history",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/profile",
+      "theme": "dark",
+      "viewport": {
+        "width": 1280,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            [
+              ".tracking-widest"
+            ],
+            [
+              "#hero-title"
+            ],
+            [
+              ".mt-2"
+            ],
+            [
+              ".text-accent-text.font-mono.flex"
+            ],
+            [
+              ".gap-x-4 > .text-muted.flex.items-center"
+            ],
+            [
+              ".gap-x-4 > .text-muted:nth-child(3)"
+            ],
+            [
+              ".px-2\\.5.rounded-full.border:nth-child(4)"
+            ],
+            [
+              ".px-2\\.5.rounded-full.border:nth-child(5)"
+            ],
+            [
+              ".px-2\\.5.rounded-full.border:nth-child(6)"
+            ],
+            [
+              ".line-clamp-3"
+            ],
+            [
+              ".subtitle-line"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(3) > .group.block[href$=\"anime/3\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(3) > .group.block[href$=\"anime/3\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(4) > .group.block[href$=\"anime/4\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(4) > .group.block[href$=\"anime/4\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(5) > .group.block[href$=\"anime/5\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(5) > .group.block[href$=\"anime/5\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(6) > .group.block[href$=\"anime/6\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(6) > .group.block[href$=\"anime/6\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(7) > .group.block[href$=\"anime/7\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(7) > .group.block[href$=\"anime/7\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(8) > .group.block[href$=\"anime/8\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(8) > .group.block[href$=\"anime/8\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(9) > .group.block[href$=\"anime/9\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(9) > .group.block[href$=\"anime/9\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(10) > .group.block[href=\"/anime/10\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(10) > .group.block[href=\"/anime/10\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(11) > .group.block[href=\"/anime/11\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(11) > .group.block[href=\"/anime/11\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(12) > .group.block[href=\"/anime/12\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(12) > .group.block[href=\"/anime/12\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(13) > .group.block[href=\"/anime/13\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(13) > .group.block[href=\"/anime/13\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(14) > .group.block[href=\"/anime/14\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(14) > .group.block[href=\"/anime/14\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(15) > .group.block[href=\"/anime/15\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Popular this season\"] > li:nth-child(15) > .group.block[href=\"/anime/15\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(3) > .group.block[href$=\"anime/3\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(3) > .group.block[href$=\"anime/3\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(4) > .group.block[href$=\"anime/4\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(4) > .group.block[href$=\"anime/4\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(5) > .group.block[href$=\"anime/5\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(5) > .group.block[href$=\"anime/5\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(6) > .group.block[href$=\"anime/6\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(6) > .group.block[href$=\"anime/6\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(7) > .group.block[href$=\"anime/7\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(7) > .group.block[href$=\"anime/7\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(8) > .group.block[href$=\"anime/8\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(8) > .group.block[href$=\"anime/8\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(9) > .group.block[href$=\"anime/9\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(9) > .group.block[href$=\"anime/9\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(10) > .group.block[href=\"/anime/10\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(10) > .group.block[href=\"/anime/10\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(11) > .group.block[href=\"/anime/11\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(11) > .group.block[href=\"/anime/11\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(12) > .group.block[href=\"/anime/12\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(12) > .group.block[href=\"/anime/12\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(13) > .group.block[href=\"/anime/13\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(13) > .group.block[href=\"/anime/13\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(14) > .group.block[href=\"/anime/14\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(14) > .group.block[href=\"/anime/14\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(15) > .group.block[href=\"/anime/15\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top airing\"] > li:nth-child(15) > .group.block[href=\"/anime/15\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(3) > .group.block[href$=\"anime/3\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(3) > .group.block[href$=\"anime/3\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(4) > .group.block[href$=\"anime/4\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(4) > .group.block[href$=\"anime/4\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(5) > .group.block[href$=\"anime/5\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(5) > .group.block[href$=\"anime/5\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(6) > .group.block[href$=\"anime/6\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(6) > .group.block[href$=\"anime/6\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(7) > .group.block[href$=\"anime/7\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(7) > .group.block[href$=\"anime/7\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(8) > .group.block[href$=\"anime/8\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(8) > .group.block[href$=\"anime/8\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(9) > .group.block[href$=\"anime/9\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(9) > .group.block[href$=\"anime/9\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(10) > .group.block[href=\"/anime/10\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(10) > .group.block[href=\"/anime/10\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(11) > .group.block[href=\"/anime/11\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(11) > .group.block[href=\"/anime/11\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(12) > .group.block[href=\"/anime/12\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(12) > .group.block[href=\"/anime/12\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(13) > .group.block[href=\"/anime/13\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(13) > .group.block[href=\"/anime/13\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(14) > .group.block[href=\"/anime/14\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(14) > .group.block[href=\"/anime/14\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(15) > .group.block[href=\"/anime/15\"] > h3"
+            ],
+            [
+              "ul[aria-label=\"Top anime of all time\"] > li:nth-child(15) > .group.block[href=\"/anime/15\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/303\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/303\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/304\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/304\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/305\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/305\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/306\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/306\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/307\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/307\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/308\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/308\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/309\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/309\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/310\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/310\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/311\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/311\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/312\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/312\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/313\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/313\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/314\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/314\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/anime/315\"] > h3"
+            ],
+            [
+              "a[href=\"/anime/315\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href$=\"manga/3\"] > h3"
+            ],
+            [
+              "a[href$=\"manga/3\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href$=\"manga/4\"] > h3"
+            ],
+            [
+              "a[href$=\"manga/4\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href$=\"manga/5\"] > h3"
+            ],
+            [
+              "a[href$=\"manga/5\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href$=\"manga/6\"] > h3"
+            ],
+            [
+              "a[href$=\"manga/6\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href$=\"manga/7\"] > h3"
+            ],
+            [
+              "a[href$=\"manga/7\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href$=\"manga/8\"] > h3"
+            ],
+            [
+              "a[href$=\"manga/8\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href$=\"manga/9\"] > h3"
+            ],
+            [
+              "a[href$=\"manga/9\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/manga/10\"] > h3"
+            ],
+            [
+              "a[href=\"/manga/10\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/manga/11\"] > h3"
+            ],
+            [
+              "a[href=\"/manga/11\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/manga/12\"] > h3"
+            ],
+            [
+              "a[href=\"/manga/12\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/manga/13\"] > h3"
+            ],
+            [
+              "a[href=\"/manga/13\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/manga/14\"] > h3"
+            ],
+            [
+              "a[href=\"/manga/14\"] > .mt-0\\.5.truncate"
+            ],
+            [
+              "a[href=\"/manga/15\"] > h3"
+            ],
+            [
+              "a[href=\"/manga/15\"] > .mt-0\\.5.truncate"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/anime",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            [
+              "a[href$=\"anime/1\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/2\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/3\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/4\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/5\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/6\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/7\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/8\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"anime/9\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/10\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/11\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/12\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/13\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/14\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/15\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/16\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/17\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/18\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/19\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/20\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/21\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/22\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/23\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/anime/24\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/manga",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            [
+              "a[href$=\"manga/1\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/2\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/3\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/4\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/5\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/6\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/7\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/8\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href$=\"manga/9\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/10\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/11\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/12\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/13\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/14\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/15\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/16\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/17\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/18\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/19\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/20\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/21\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/22\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/23\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ],
+            [
+              "a[href=\"/manga/24\"] > .overflow-hidden.shadow-card.ring-1 > .left-2.bg-black\\/75.top-2"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/search",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/schedule",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/login",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/signup",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/forgot-password",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/reset-password",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/verify-email",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/anime/2",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/manga/3",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/anime/99999999",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "path": "/list",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            [
+              ".p-0\\.5 > .size-8.grid.place-items-center"
+            ],
+            [
+              ".px-3\\.5.shrink-0.py-1\\.5:nth-child(2) > .opacity-70.font-mono.text-xs"
+            ],
+            [
+              ".px-3\\.5.shrink-0.py-1\\.5:nth-child(3) > .opacity-70.font-mono.text-xs"
+            ],
+            [
+              ".px-3\\.5.shrink-0.py-1\\.5:nth-child(4) > .opacity-70.font-mono.text-xs"
+            ],
+            [
+              ".px-3\\.5.shrink-0.py-1\\.5:nth-child(5) > .opacity-70.font-mono.text-xs"
+            ],
+            [
+              ".px-3\\.5.shrink-0.py-1\\.5:nth-child(6) > .opacity-70.font-mono.text-xs"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/history",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            [
+              ".text-accent-text"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/profile",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            [
+              ".size-8.text-accent-text.place-items-center"
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}
