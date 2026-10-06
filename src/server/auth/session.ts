@@ -27,7 +27,10 @@ function secretKey() {
   return new TextEncoder().encode(env.jwtSecret)
 }
 
-export async function signSession(userId: string, tokenVersion: number): Promise<string> {
+export async function signSession(
+  userId: string,
+  tokenVersion: number,
+): Promise<string> {
   return new SignJWT({ version: tokenVersion })
     .setProtectedHeader({ alg: 'HS256' })
     .setSubject(userId)
@@ -37,9 +40,13 @@ export async function signSession(userId: string, tokenVersion: number): Promise
     .sign(secretKey())
 }
 
-export async function startSession(userId: string) {
-  const user = await db.query.users.findFirst({ where: eq(schema.users.id, userId) })
+export async function startSession(userId: string, expectedVersion?: number) {
+  const user = await db.query.users.findFirst({
+    where: eq(schema.users.id, userId),
+  })
   if (!user) throw new Error('Account does not exist')
+  if (expectedVersion !== undefined && user.tokenVersion !== expectedVersion)
+    throw new Error('Account credentials changed. Sign in again.')
   const token = await signSession(userId, user.tokenVersion)
   setCookie(SESSION_COOKIE, token, {
     httpOnly: true,
@@ -54,7 +61,10 @@ export function endSession() {
   deleteCookie(SESSION_COOKIE, { path: '/' })
 }
 
-async function userIdFromCookie(): Promise<{ id: string; version: number } | null> {
+async function userIdFromCookie(): Promise<{
+  id: string
+  version: number
+} | null> {
   const token = getCookie(SESSION_COOKIE)
   if (!token) return null
   try {
@@ -62,7 +72,9 @@ async function userIdFromCookie(): Promise<{ id: string; version: number } | nul
       issuer: ISSUER,
       algorithms: ['HS256'],
     })
-    return payload.sub && typeof payload.version === 'number' ? { id: payload.sub, version: payload.version } : null
+    return payload.sub && typeof payload.version === 'number'
+      ? { id: payload.sub, version: payload.version }
+      : null
   } catch {
     return null
   }

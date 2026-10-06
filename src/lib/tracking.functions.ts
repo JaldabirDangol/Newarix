@@ -18,7 +18,7 @@ import { listStatuses } from './status'
 import type { ListStatus } from './status'
 
 const kind = z.enum(['anime', 'manga'])
-const ref = z.object({ kind, id: z.number().int().positive() })
+const ref = z.object({ kind, id: z.number().int().positive().max(2147483647) })
 
 // Dates become ISO strings so loaders return plain JSON-friendly data.
 export type EntryDTO = Omit<
@@ -132,17 +132,31 @@ export const toggleFavorite = createServerFn({ method: 'POST' })
       eq(schema.favorites.mediaType, data.kind),
       eq(schema.favorites.malId, data.id),
     )
-    const deleted = await db.delete(schema.favorites).where(where).returning()
-    if (deleted.length) return { favorite: false }
     const snap = await loadSnapshot(data.kind, data.id).catch(catalogFailure)
-    await db.insert(schema.favorites).values({
-      userId: context.user.id,
-      mediaType: data.kind,
-      malId: data.id,
-      title: snap.title,
-      imageUrl: snap.imageUrl,
+    return db.transaction(async (tx) => {
+      const owner = await tx
+        .select({ id: schema.users.id })
+        .from(schema.users)
+        .where(eq(schema.users.id, context.user.id))
+        .for('update')
+      if (!owner.length) throw new Error('Account does not exist')
+      const deleted = await tx.delete(schema.favorites).where(where).returning()
+      if (deleted.length) return { favorite: false }
+      const [total] = await tx
+        .select({ n: count() })
+        .from(schema.favorites)
+        .where(eq(schema.favorites.userId, context.user.id))
+      if (total.n >= 500)
+        throw new Error('You have reached the 500 favorite limit.')
+      await tx.insert(schema.favorites).values({
+        userId: context.user.id,
+        mediaType: data.kind,
+        malId: data.id,
+        title: snap.title,
+        imageUrl: snap.imageUrl,
+      })
+      return { favorite: true }
     })
-    return { favorite: true }
   })
 
 export const getMyList = createServerFn({ method: 'GET' })
@@ -159,6 +173,7 @@ export const getMyList = createServerFn({ method: 'GET' })
         ),
       )
       .orderBy(desc(schema.listEntries.updatedAt))
+      .limit(1000)
     const counts = Object.fromEntries(
       listStatuses.map((s) => [s, 0]),
     ) as Record<ListStatus, number>
@@ -274,6 +289,7 @@ export const getProfile = createServerFn({ method: 'GET' })
       .from(schema.favorites)
       .where(eq(schema.favorites.userId, userId))
       .orderBy(desc(schema.favorites.createdAt))
+      .limit(500)
 
     const stat = (media: 'anime' | 'manga') => {
       const rows = totals.filter((t) => t.kind === media)
@@ -311,8 +327,19 @@ export const getProfile = createServerFn({ method: 'GET' })
 
 export const recordWatch = createServerFn({ method: 'POST' })
   .middleware([authMiddleware])
-  .validator(z.object({ id: z.number().int().positive(), episode: z.number().int().positive().max(100_000), positionSeconds: z.number().int().min(0).max(604800).optional() }))
+  .validator(
+    z.object({
+      id: z.number().int().positive().max(2147483647),
+      episode: z.number().int().positive().max(2147483647).max(100_000),
+      positionSeconds: z.number().int().min(0).max(604800).optional(),
+    }),
+  )
   .handler(async ({ data, context }) => {
-    await recordPlayback(context.user.id, data.id, data.episode, data.positionSeconds).catch(catalogFailure)
+    await recordPlayback(
+      context.user.id,
+      data.id,
+      data.episode,
+      data.positionSeconds,
+    ).catch(catalogFailure)
     return { ok: true }
   })

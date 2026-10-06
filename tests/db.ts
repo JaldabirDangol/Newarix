@@ -10,6 +10,14 @@ export const TEST_DB_URL =
 export async function prepareTestDatabase(url = TEST_DB_URL) {
   const target = new URL(url)
   const name = target.pathname.slice(1)
+  if (
+    !['localhost', '127.0.0.1', '[::1]'].includes(target.hostname) ||
+    !/^[a-zA-Z0-9_]+_(test|e2e)$/.test(name)
+  ) {
+    throw new Error(
+      'Tests require an isolated local database ending in _test or _e2e',
+    )
+  }
   const admin = new URL(url)
   admin.pathname = '/postgres'
   const adminSql = postgres(admin.toString(), { max: 1, onnotice: () => {} })

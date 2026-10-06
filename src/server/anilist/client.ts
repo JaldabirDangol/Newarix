@@ -46,7 +46,8 @@ export const TTL = {
 const MESSAGES = {
   busy: 'The anime database (AniList) is busy right now. Try again in a minute.',
   down: "The anime database (AniList) isn't responding. Try again shortly.",
-  unreachable: "Couldn't reach the anime database (AniList). Try again shortly.",
+  unreachable:
+    "Couldn't reach the anime database (AniList). Try again shortly.",
 }
 
 export type Variables = Record<string, unknown>
@@ -60,13 +61,22 @@ type GraphQLResponse = {
 export function cacheKey(query: string, variables: Variables) {
   const name = /\b(?:query)\s+(\w+)/.exec(query)?.[1] ?? 'query'
   const sorted = JSON.stringify(variables, Object.keys(variables).sort())
-  const hash = createHash('sha1').update(query).update(sorted).digest('hex').slice(0, 20)
+  const hash = createHash('sha1')
+    .update(query)
+    .update(sorted)
+    .digest('hex')
+    .slice(0, 20)
   return `${name}:${hash}`
 }
 
-export function backoffMs(attempt: number, retryAfter: string | null, random = Math.random) {
+export function backoffMs(
+  attempt: number,
+  retryAfter: string | null,
+  random = Math.random,
+) {
   const seconds = retryAfter ? Number(retryAfter) : NaN
-  if (Number.isFinite(seconds) && seconds > 0) return Math.min(seconds, 60) * 1000
+  if (Number.isFinite(seconds) && seconds > 0)
+    return Math.min(seconds, 60) * 1000
   return 1000 * 2 ** attempt + random() * 400
 }
 
@@ -86,10 +96,14 @@ export function createAniListClient(deps: ClientDeps) {
   let queue = Promise.resolve()
 
   function acquireSlot(): Promise<void> {
+    const deadline = deps.now() + 15_000
     const turn = queue.then(async () => {
       for (;;) {
+        if (deps.now() >= deadline) throw new CatalogError(MESSAGES.busy, 503)
         const wait = await deps.store.reserveSlot(SLOT_KEY, LIMITS)
         if (wait <= 0) return
+        if (deps.now() + wait >= deadline)
+          throw new CatalogError(MESSAGES.busy, 503)
         await deps.sleep(wait)
       }
     })
@@ -109,7 +123,10 @@ export function createAniListClient(deps: ClientDeps) {
       try {
         res = await deps.fetch(deps.url, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
           body: JSON.stringify({ query, variables, operationName }),
           signal: AbortSignal.timeout(TIMEOUT_MS),
         })
@@ -121,7 +138,10 @@ export function createAniListClient(deps: ClientDeps) {
       }
       if (res.status === 429 || res.status >= 500) {
         retryAfter = res.headers.get('retry-after')
-        lastError = new CatalogError(res.status === 429 ? MESSAGES.busy : MESSAGES.down, res.status)
+        lastError = new CatalogError(
+          res.status === 429 ? MESSAGES.busy : MESSAGES.down,
+          res.status,
+        )
         continue
       }
       let body: GraphQLResponse
@@ -137,7 +157,10 @@ export function createAniListClient(deps: ClientDeps) {
       }
       if (!res.ok || (errors.length && !body.data)) {
         // Bad query or variables: retrying won't help.
-        throw new CatalogError(`AniList rejected the request: ${errors[0]?.message ?? res.status}`, res.status || 400)
+        throw new CatalogError(
+          'The anime database rejected the request.',
+          res.status || 400,
+        )
       }
       return body.data
     }
@@ -154,7 +177,11 @@ export function createAniListClient(deps: ClientDeps) {
     }
   }
 
-  return async function anilist<T>(query: string, variables: Variables = {}, ttl: number = TTL.list): Promise<T> {
+  return async function anilist<T>(
+    query: string,
+    variables: Variables = {},
+    ttl: number = TTL.list,
+  ): Promise<T> {
     const key = cacheKey(query, variables)
     const cached = ttl > 0 ? await readCache(key) : null
     if (cached && cached.expiresAt > deps.now()) return cached.data as T
@@ -162,12 +189,18 @@ export function createAniListClient(deps: ClientDeps) {
     const pending = inflight.get(key)
     if (pending) return pending as Promise<T>
 
+    // Do not grow an unlimited queue of distinct cache misses.
+    if (inflight.size >= 32) throw new CatalogError(MESSAGES.busy, 503)
     const request = send(query, variables)
       .then(async (data) => {
         if (ttl > 0) {
           const entry: CacheEntry = { data, expiresAt: deps.now() + ttl }
           // Keep it past expiry so it can be served while AniList is down.
-          await deps.store.set(CACHE_PREFIX + key, JSON.stringify(entry), ttl + STALE_GRACE_MS)
+          await deps.store.set(
+            CACHE_PREFIX + key,
+            JSON.stringify(entry),
+            ttl + STALE_GRACE_MS,
+          )
         }
         return data
       })

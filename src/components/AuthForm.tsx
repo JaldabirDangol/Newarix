@@ -1,3 +1,4 @@
+import { safeRedirectPath } from '#/lib/redirect'
 import { useState } from 'react'
 import { useRouter } from '@tanstack/react-router'
 import { Loader2 } from 'lucide-react'
@@ -59,10 +60,7 @@ export function AuthForm({
       resetSession()
       await router.invalidate()
       // Only follow same-site paths to avoid open redirects.
-      const safe =
-        redirectTo.startsWith('/') && !redirectTo.startsWith('//')
-          ? redirectTo
-          : '/'
+      const safe = safeRedirectPath(redirectTo)
       await router.history.push(safe)
     } catch {
       setError({
@@ -80,9 +78,27 @@ export function AuthForm({
         <h1 className="mt-8 font-display text-3xl">{title}</h1>
         <p className="mt-2 text-sm text-muted">{subtitle}</p>
       </div>
-      {initialError && <p role="alert" className="mb-4 text-sm text-danger">{initialError}</p>}
-      {google && <><a href="/api/auth/google" className={`${btn.ghost} mb-4`}>Continue with Google</a><p className="mb-4 text-center text-xs text-muted">or use your email</p></>}
-      <form method="post" onSubmit={submit} noValidate className="flex flex-col gap-4">
+      {initialError && (
+        <p role="alert" className="mb-4 text-sm text-danger">
+          {initialError}
+        </p>
+      )}
+      {google && (
+        <>
+          <a href="/api/auth/google" className={`${btn.ghost} mb-4`}>
+            Continue with Google
+          </a>
+          <p className="mb-4 text-center text-xs text-muted">
+            or use your email
+          </p>
+        </>
+      )}
+      <form
+        method="post"
+        onSubmit={submit}
+        noValidate
+        className="flex flex-col gap-4"
+      >
         {fields.map((f) => {
           const invalid = error?.field === f.name
           return (

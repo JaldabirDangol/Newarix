@@ -4,6 +4,8 @@ Discover anime and manga, follow the weekly airing schedule, and track every epi
 
 Catalog data comes from [Jikan](https://jikan.moe) (an unofficial MyAnimeList API). Accounts, lists, history and favorites live in your own Postgres database.
 
+The current security review, hardening changes, deployment actions and verification limits are documented in the [security report](docs/security/report.md). The Compose setup uses development credentials and is for local use; existing containers must be recreated in a planned window to apply its loopback-only port bindings.
+
 - **Stack:** TanStack Start (React 19, file-based routing, server functions) · Tailwind CSS v4 · Postgres 17 · Redis · Drizzle ORM · JWT sessions (`jose`) · Zod · Vitest · Playwright
 - **Research notes and future ideas:** [`docs/research.md`](docs/research.md)
 

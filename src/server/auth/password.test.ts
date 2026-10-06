@@ -18,3 +18,21 @@ describe('password hashing', () => {
     expect(await verifyPassword('x', '')).toBe(false)
   })
 })
+
+it('keeps legacy hashes readable and identifies them for upgrade', async () => {
+  const { scryptSync } = await import('node:crypto')
+  const { needsPasswordRehash, verifyLoginPassword } =
+    await import('./password')
+  const salt = Buffer.alloc(16, 7)
+  const hash = scryptSync('legacy-password', salt, 64, {
+    N: 32768,
+    r: 8,
+    p: 1,
+    maxmem: 64 * 1024 * 1024,
+  })
+  const stored = `scrypt$${salt.toString('base64')}$${hash.toString('base64')}`
+  expect(await verifyPassword('legacy-password', stored)).toBe(true)
+  expect(needsPasswordRehash(stored)).toBe(true)
+  expect(needsPasswordRehash(await hashPassword('legacy-password'))).toBe(false)
+  expect(await verifyLoginPassword('any-password', null)).toBe(false)
+})

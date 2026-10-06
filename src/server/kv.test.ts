@@ -66,3 +66,55 @@ describe('MemoryStore', () => {
     expect(await store.reserveSlot('s', limits)).toBe(0)
   })
 })
+
+it('cache eviction cannot reset active rate-limit counters', async () => {
+  const store = new MemoryStore(2)
+  await store.hit('login', 60_000)
+  await store.set('poster1', 'a', 60_000)
+  await store.set('poster2', 'b', 60_000)
+  await store.set('poster3', 'c', 60_000)
+  expect(await store.hit('login', 60_000)).toBe(2)
+})
+
+it('bounds distinct counters without evicting active security limits', async () => {
+  let now = 0
+  const store = new MemoryStore(2, () => now)
+  await store.hit('a', 1000)
+  await store.hit('b', 1000)
+  expect(await store.hit('c', 1000)).toBe(Infinity)
+  expect(await store.hit('a', 1000)).toBe(2)
+  now = 1000
+  expect(await store.hit('c', 1000)).toBe(1)
+})
+
+it('bounds cached bytes as well as entry count', async () => {
+  const store = new MemoryStore(100, Date.now, 10)
+  await store.set('a', '123456', 60_000)
+  await store.set('b', '123456', 60_000)
+  expect(await store.get('a')).toBeNull()
+  expect(await store.get('b')).toBe('123456')
+  await store.set('oversized', '12345678901', 60_000)
+  expect(await store.get('oversized')).toBeNull()
+})
+
+it('fails production security counters closed while preserving cache fallback', async () => {
+  const { FallbackStore } = await import('./kv')
+  const { env } = await import('./env')
+  const original = env.isProd
+  env.isProd = true
+  const memory = new MemoryStore()
+  await memory.set('cached', 'safe', 60_000)
+  const failure = async () => {
+    throw new Error('sensitive provider details')
+  }
+  const store = new FallbackStore(
+    { get: failure, set: failure, hit: failure, reserveSlot: failure },
+    memory,
+  )
+  try {
+    expect(await store.hit('login', 60_000)).toBe(Infinity)
+    expect(await store.get('cached')).toBe('safe')
+  } finally {
+    env.isProd = original
+  }
+})

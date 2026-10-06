@@ -128,7 +128,20 @@ export function humanize(value: string) {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+]
 
 function fuzzyDate(d: FuzzyDate | null | undefined) {
   if (!d?.year) return null
@@ -175,7 +188,8 @@ export function plainText(html: string | null) {
   return text || null
 }
 
-const kindOf = (type: AniCard['type']): MediaKind => (type === 'MANGA' ? 'manga' : 'anime')
+const kindOf = (type: AniCard['type']): MediaKind =>
+  type === 'MANGA' ? 'manga' : 'anime'
 
 /** Null when AniList has no MAL id for the title (it can't be tracked or linked). */
 export function toCard(m: AniCard): MediaCard | null {
@@ -247,10 +261,13 @@ function detailBase(m: AniDetail, card: MediaCard) {
       .filter((t) => t.category !== 'Demographic')
       .slice(0, 8)
       .map((t) => t.name),
-    demographics: m.tags.filter((t) => t.category === 'Demographic').map((t) => t.name),
+    demographics: m.tags
+      .filter((t) => t.category === 'Demographic')
+      .map((t) => t.name),
     relations: relations(m),
     malUrl: `https://myanimelist.net/${card.kind}/${card.id}`,
-    siteUrl: m.siteUrl,
+    siteUrl:
+      safeHttpsUrl(m.siteUrl) ?? `https://anilist.co/${card.kind}/${m.id}`,
   }
 }
 
@@ -263,15 +280,24 @@ export function animeDetail(m: AniDetail): AnimeDetail | null {
     kind: 'anime',
     airing: m.status === 'RELEASING',
     source: m.source ? humanize(m.source) : null,
-    duration: m.duration ? `${m.duration} min${m.episodes === 1 ? '' : ' per episode'}` : null,
+    duration: m.duration
+      ? `${m.duration} min${m.episodes === 1 ? '' : ' per episode'}`
+      : null,
     rating: null,
     season: m.season ? m.season.toLowerCase() : null,
     aired: dateRange(m.startDate, m.endDate, m.status === 'RELEASING'),
-    broadcast: next ? `Episode ${next.episode} · ${formatJst(next.airingAt)}` : null,
+    broadcast: next
+      ? `Episode ${next.episode} · ${formatJst(next.airingAt)}`
+      : null,
     studios: m.studios.nodes.map((s) => s.name),
     producers: [],
-    trailerId: m.trailer?.site === 'youtube' ? m.trailer.id : null,
-    streaming: m.externalLinks.filter((l) => l.type === 'STREAMING').map((l) => ({ name: l.site, url: l.url })),
+    trailerId:
+      m.trailer?.site === 'youtube' && /^[A-Za-z0-9_-]{11}$/.test(m.trailer.id)
+        ? m.trailer.id
+        : null,
+    streaming: m.externalLinks
+      .filter((l) => l.type === 'STREAMING' && safeHttpsUrl(l.url))
+      .map((l) => ({ name: l.site, url: l.url })),
   }
 }
 
@@ -310,7 +336,9 @@ export function characters(m: AniDetail): Character[] {
 export function recommendations(m: AniDetail): Recommendation[] {
   const items: Recommendation[] = []
   for (const node of m.recommendations.nodes) {
-    const card = node.mediaRecommendation ? toCard(node.mediaRecommendation) : null
+    const card = node.mediaRecommendation
+      ? toCard(node.mediaRecommendation)
+      : null
     if (card && node.mediaRecommendation && !node.mediaRecommendation.isAdult) {
       items.push({ ...card, votes: node.rating })
     }
@@ -321,4 +349,16 @@ export function recommendations(m: AniDetail): Recommendation[] {
 /** English title when the user would recognise it more easily. */
 export function displayTitle(m: Pick<MediaCard, 'title' | 'titleEnglish'>) {
   return m.titleEnglish || m.title
+}
+
+/** External catalog links are untrusted; never forward executable schemes. */
+export function safeHttpsUrl(value: string): string | null {
+  try {
+    const url = new URL(value)
+    return url.protocol === 'https:' && !url.username && !url.password
+      ? url.href
+      : null
+  } catch {
+    return null
+  }
 }

@@ -1,4 +1,5 @@
 import { Link, createFileRoute, redirect } from '@tanstack/react-router'
+import { safeRedirectPath } from '#/lib/redirect'
 import { z } from 'zod'
 import { getAuthOptions, login } from '#/lib/auth.functions'
 import { AuthForm } from '#/components/AuthForm'
@@ -11,7 +12,7 @@ export const Route = createFileRoute('/login')({
   beforeLoad: ({ context, search }) => {
     if (context.user)
       throw redirect({
-        href: search.redirect?.startsWith('/') && !search.redirect.startsWith('//') ? search.redirect : '/',
+        href: safeRedirectPath(search.redirect),
       })
   },
   head: () => ({ meta: [{ title: 'Log in · Newarix' }] }),
@@ -25,8 +26,10 @@ function LoginPage() {
   const oauthErrors: Record<string, string> = {
     google_failed: 'Google login could not be completed. Please try again.',
     google_cancelled: 'Google login was cancelled.',
-    google_existing: 'This email already has an account. Log in with your password, then connect Google from your profile.',
-    google_link_failed: 'Sign in to the matching account before connecting Google.',
+    google_existing:
+      'This email already has an account. Log in with your password, then connect Google from your profile.',
+    google_link_failed:
+      'Sign in to the matching account before connecting Google.',
     too_many: 'Too many login attempts. Try again in 15 minutes.',
   }
   return (
@@ -59,7 +62,14 @@ function LoginPage() {
           >
             Create an account
           </Link>
-          <p className="mt-3"><Link to="/forgot-password" className="text-accent-text hover:underline">Forgot your password?</Link></p>
+          <p className="mt-3">
+            <Link
+              to="/forgot-password"
+              className="text-accent-text hover:underline"
+            >
+              Forgot your password?
+            </Link>
+          </p>
         </>
       }
     />

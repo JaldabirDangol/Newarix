@@ -1,5 +1,6 @@
 import Redis from 'ioredis'
 import { env } from './env'
+import { securityEvent } from './security-events'
 
 /**
  * Small key-value layer shared by the AniList cache and the rate limiters.
@@ -48,16 +49,20 @@ export function slotWait(
 export class MemoryStore implements Store {
   private values = new Map<string, { value: string; expiresAt: number }>()
   private slots = new Map<string, number[]>()
+  private counters = new Map<string, { count: number; expiresAt: number }>()
+  private bytes = 0
 
   constructor(
     private maxEntries = 1000,
     private now: () => number = Date.now,
+    private maxBytes = 32 * 1024 * 1024,
   ) {}
 
   get(key: string) {
     const entry = this.values.get(key)
     if (!entry) return Promise.resolve(null)
     if (entry.expiresAt <= this.now()) {
+      this.bytes -= Buffer.byteLength(entry.value)
       this.values.delete(key)
       return Promise.resolve(null)
     }
@@ -68,11 +73,17 @@ export class MemoryStore implements Store {
   }
 
   set(key: string, value: string, ttlMs: number) {
+    const previous = this.values.get(key)
+    if (previous) this.bytes -= Buffer.byteLength(previous.value)
     this.values.delete(key)
+    const size = Buffer.byteLength(value)
+    if (size > this.maxBytes) return Promise.resolve()
     this.values.set(key, { value, expiresAt: this.now() + ttlMs })
-    while (this.values.size > this.maxEntries) {
+    this.bytes += size
+    while (this.values.size > this.maxEntries || this.bytes > this.maxBytes) {
       const oldest = this.values.keys().next().value
       if (oldest === undefined) break
+      this.bytes -= Buffer.byteLength(this.values.get(oldest)!.value)
       this.values.delete(oldest)
     }
     return Promise.resolve()
@@ -80,12 +91,17 @@ export class MemoryStore implements Store {
 
   hit(key: string, windowMs: number) {
     const now = this.now()
-    const entry = this.values.get(key)
-    const count = entry && entry.expiresAt > now ? Number(entry.value) + 1 : 1
-    this.values.set(key, {
-      value: String(count),
-      expiresAt:
-        entry && entry.expiresAt > now ? entry.expiresAt : now + windowMs,
+    for (const [name, counter] of this.counters) {
+      if (counter.expiresAt <= now) this.counters.delete(name)
+    }
+    const entry = this.counters.get(key)
+    // Never evict active security counters to make room for attacker keys.
+    if (!entry && this.counters.size >= this.maxEntries)
+      return Promise.resolve(Infinity)
+    const count = (entry?.count ?? 0) + 1
+    this.counters.set(key, {
+      count,
+      expiresAt: entry?.expiresAt ?? now + windowMs,
     })
     return Promise.resolve(count)
   }
@@ -166,7 +182,7 @@ export class RedisStore implements Store {
 }
 
 /** Uses Redis, and falls back to memory for any call Redis fails. */
-class FallbackStore implements Store {
+export class FallbackStore implements Store {
   private lastWarning = 0
 
   constructor(
@@ -177,12 +193,11 @@ class FallbackStore implements Store {
   private async run<T>(op: (s: Store) => Promise<T>): Promise<T> {
     try {
       return await op(this.primary)
-    } catch (err) {
+    } catch {
       if (Date.now() - this.lastWarning > 60_000) {
         this.lastWarning = Date.now()
         console.warn(
-          '[kv] Redis unavailable, using in-memory store:',
-          (err as Error).message,
+          '[kv] Redis unavailable; cache uses memory and production security counters fail closed',
         )
       }
       return op(this.fallback)
@@ -192,7 +207,13 @@ class FallbackStore implements Store {
   get = (key: string) => this.run((s) => s.get(key))
   set = (key: string, value: string, ttlMs: number) =>
     this.run((s) => s.set(key, value, ttlMs))
-  hit = (key: string, windowMs: number) => this.run((s) => s.hit(key, windowMs))
+  hit = (key: string, windowMs: number) =>
+    env.isProd
+      ? this.primary.hit(key, windowMs).catch(() => {
+          securityEvent('redis_security_unavailable')
+          return Infinity
+        })
+      : this.run((s) => s.hit(key, windowMs))
   reserveSlot = (key: string, limits: SlotLimits) =>
     this.run((s) => s.reserveSlot(key, limits))
 }

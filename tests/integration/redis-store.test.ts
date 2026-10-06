@@ -4,6 +4,12 @@ import { RedisStore } from '#/server/kv'
 
 // Uses database 15 of the docker-compose Redis so dev data is untouched.
 const url = process.env.TEST_REDIS_URL ?? 'redis://localhost:16379/15'
+const redisTarget = new URL(url)
+if (
+  !['localhost', '127.0.0.1', '[::1]'].includes(redisTarget.hostname) ||
+  redisTarget.pathname !== '/15'
+)
+  throw new Error('Redis tests require an isolated local test database')
 const redis = new Redis(url, { lazyConnect: true, maxRetriesPerRequest: 1 })
 const store = new RedisStore(redis)
 let available = true
