@@ -11,13 +11,20 @@ export function DetailTabs({
   kind,
   title,
   total = null,
+  loggedIn = false,
+  initialEpisode,
+  savedPosition,
 }: {
   id: number
   kind: MediaKind
   title: string
   total?: number | null
+  loggedIn?: boolean
+  initialEpisode?: number
+  savedPosition?: number
 }) {
-  const [playing, setPlaying] = useState<number | null>(null)
+  const [playing, setPlaying] = useState<number | null>(initialEpisode ?? null)
+  useEffect(() => setPlaying(initialEpisode ?? null), [initialEpisode])
   const [tab, setTab] = useState<'episodes' | 'pictures'>(
     kind === 'anime' ? 'episodes' : 'pictures',
   )
@@ -61,6 +68,8 @@ export function DetailTabs({
     <>
       {kind === 'anime' && (
         <EpisodePlayer
+          savedPosition={playing === initialEpisode ? savedPosition : null}
+          loggedIn={loggedIn}
           id={id}
           title={title}
           total={total}

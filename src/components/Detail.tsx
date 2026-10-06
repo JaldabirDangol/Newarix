@@ -175,10 +175,14 @@ export function DetailPage({
   media,
   tracking,
   extras,
+  initialEpisode,
+  savedPosition,
 }: {
   media: AnimeDetail | MangaDetail
   tracking: Tracking
   extras: Promise<Extras>
+  initialEpisode?: number
+  savedPosition?: number
 }) {
   const title = displayTitle(media)
   const isAnime = media.kind === 'anime'
@@ -341,6 +345,9 @@ export function DetailPage({
           </section>
 
           <DetailTabs
+            initialEpisode={initialEpisode}
+            savedPosition={savedPosition}
+            loggedIn={tracking.loggedIn}
             key={`${media.kind}:${media.id}`}
             id={media.id}
             kind={media.kind}

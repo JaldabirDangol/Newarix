@@ -237,3 +237,29 @@ export async function recentHistory(userId: string, limit: number) {
     .orderBy(desc(schema.watchHistory.createdAt))
     .limit(limit)
 }
+
+/** Record actual playback without treating a started episode as completed. */
+export async function recordPlayback(userId: string, malId: number, episode: number, positionSeconds?: number) {
+  const snapshot = await loadSnapshot('anime', malId)
+  if (snapshot.total !== null && episode > snapshot.total) throw new Error('Episode is outside this title')
+  await db.transaction(async (tx) => {
+    // Serialize duplicate playback signals from tabs/reloads for this account.
+    await tx.select({ id: schema.users.id }).from(schema.users).where(eq(schema.users.id, userId)).for('update')
+    const recent = await tx.query.watchHistory.findFirst({ where: and(
+      eq(schema.watchHistory.userId, userId),
+      eq(schema.watchHistory.mediaType, 'anime'),
+      eq(schema.watchHistory.malId, malId),
+      eq(schema.watchHistory.action, 'progress'),
+      eq(schema.watchHistory.progress, episode),
+      gte(schema.watchHistory.createdAt, new Date(Date.now() - 30 * 60_000)),
+    ) })
+    if (recent) {
+      if (positionSeconds !== undefined) await tx.update(schema.watchHistory).set({ positionSeconds }).where(eq(schema.watchHistory.id, recent.id))
+      return
+    }
+    await tx.insert(schema.watchHistory).values({
+      userId, malId, mediaType: 'anime', action: 'progress', progress: episode,
+      title: snapshot.title, imageUrl: snapshot.imageUrl, positionSeconds,
+    })
+  })
+}

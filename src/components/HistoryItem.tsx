@@ -46,33 +46,49 @@ export function HistoryItem({
   showTime?: boolean
 }) {
   const mounted = useMounted()
+  const playback =
+    h.mediaType === 'anime' && h.action === 'progress' && h.progress
+      ? { episode: h.progress, position: h.positionSeconds ?? undefined }
+      : undefined
   return (
-    <li className="relative flex items-center gap-3 py-2.5 pl-6">
-      <span
-        className="absolute top-1/2 left-0 size-2.5 -translate-y-1/2 rounded-full ring-4 ring-bg"
-        style={{ background: dotColor[h.action] }}
-        aria-hidden
-      />
-      <Link {...detailLink(h.mediaType, h.malId)} aria-label={`View ${h.title}`} className="shrink-0 rounded">
-        <Img src={h.imageUrl} alt="" className="h-12 w-8 rounded" />
+    <li>
+      <Link
+        {...detailLink(h.mediaType, h.malId)}
+        search={playback}
+        className="relative flex cursor-pointer items-center gap-3 rounded-lg py-2.5 pl-6 hover:bg-raised"
+        aria-label={
+          playback
+            ? `Continue episode ${h.progress} of ${h.title}`
+            : `View ${h.title}`
+        }
+      >
+        <span
+          className="absolute top-1/2 left-0 size-2.5 -translate-y-1/2 rounded-full ring-4 ring-bg"
+          style={{ background: dotColor[h.action] }}
+          aria-hidden
+        />
+        <span className="shrink-0 rounded">
+          <Img src={h.imageUrl} alt="" className="h-12 w-8 rounded" />
+        </span>
+        <p className="min-w-0 flex-1 text-sm">
+          <span className="text-muted">{describe(h)}</span>{' '}
+          <span className="font-semibold">{h.title}</span>
+          {h.positionSeconds !== null && h.positionSeconds > 0 && (
+            <span className="ml-2 text-xs text-muted">
+              {Math.floor(h.positionSeconds / 60)}:
+              {String(h.positionSeconds % 60).padStart(2, '0')}
+            </span>
+          )}
+        </p>
+        {showTime && (
+          <time
+            dateTime={h.createdAt}
+            className="shrink-0 font-mono text-xs text-muted"
+          >
+            {mounted ? formatTime(h.createdAt) : ''}
+          </time>
+        )}
       </Link>
-      <p className="min-w-0 flex-1 text-sm">
-        <span className="text-muted">{describe(h)}</span>{' '}
-        <Link
-          {...detailLink(h.mediaType, h.malId)}
-          className="font-semibold hover:text-accent-text"
-        >
-          {h.title}
-        </Link>
-      </p>
-      {showTime && (
-        <time
-          dateTime={h.createdAt}
-          className="shrink-0 font-mono text-xs text-muted"
-        >
-          {mounted ? formatTime(h.createdAt) : ''}
-        </time>
-      )}
     </li>
   )
 }

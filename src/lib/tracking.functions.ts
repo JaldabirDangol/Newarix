@@ -8,6 +8,7 @@ import {
   applyEntryChange,
   loadSnapshot,
   recentHistory,
+  recordPlayback,
   removeEntry,
 } from '#/server/tracking'
 import { CatalogError } from '#/server/anilist/client'
@@ -306,4 +307,12 @@ export const getProfile = createServerFn({ method: 'GET' })
       favorites: favs.map(favoriteDTO),
       recent: (await recentHistory(userId, 6)).map(historyDTO),
     }
+  })
+
+export const recordWatch = createServerFn({ method: 'POST' })
+  .middleware([authMiddleware])
+  .validator(z.object({ id: z.number().int().positive(), episode: z.number().int().positive().max(100_000), positionSeconds: z.number().int().min(0).max(604800).optional() }))
+  .handler(async ({ data, context }) => {
+    await recordPlayback(context.user.id, data.id, data.episode, data.positionSeconds).catch(catalogFailure)
+    return { ok: true }
   })

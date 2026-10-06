@@ -123,6 +123,7 @@ export const watchHistory = pgTable(
     score: smallint('score'),
     title: text('title').notNull(),
     imageUrl: text('image_url'),
+    positionSeconds: integer('position_seconds'),
     createdAt: timestamp('created_at', { withTimezone: true })
       .notNull()
       .defaultNow(),

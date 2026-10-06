@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { asc, eq, sql } from 'drizzle-orm'
 import { db, schema } from '#/server/db'
-import { applyEntryChange, removeEntry } from '#/server/tracking'
+import { applyEntryChange, removeEntry, recordPlayback } from '#/server/tracking'
 import type * as AniListClient from '#/server/anilist/client'
 
 // AniList is replaced by fixed titles: id 1 has 12 episodes, id 2 is still
@@ -191,4 +191,27 @@ describe('removeEntry', () => {
     await removeEntry(userId, 'anime', 99)
     expect(await history()).toEqual([])
   })
+})
+
+describe('recordPlayback', () => {
+  it('records playback once across repeated and concurrent signals without completing list progress', async () => {
+    await Promise.all([recordPlayback(userId, 1, 3), recordPlayback(userId, 1, 3)])
+    await recordPlayback(userId, 1, 3)
+    expect(await history()).toEqual([['progress', 3]])
+    expect(await db.select().from(schema.listEntries)).toHaveLength(0)
+    await recordPlayback(userId, 1, 4)
+    expect(await history()).toEqual([['progress', 3], ['progress', 4]])
+  })
+  it('rejects episodes beyond the known total', async () => {
+    await expect(recordPlayback(userId, 1, 13)).rejects.toThrow('outside this title')
+    expect(await history()).toEqual([])
+  })
+})
+
+it('updates the saved position without duplicating a watch event', async () => {
+  await recordPlayback(userId, 1, 3, 120)
+  await recordPlayback(userId, 1, 3, 135)
+  expect(await history()).toEqual([['progress', 3]])
+  const [row] = await db.select().from(schema.watchHistory)
+  expect(row.positionSeconds).toBe(135)
 })

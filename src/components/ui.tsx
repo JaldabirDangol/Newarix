@@ -12,10 +12,10 @@ import type { ReactNode } from 'react'
 
 export const btn = {
   primary:
-    'inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-bold text-on-accent transition hover:brightness-105 active:translate-y-px disabled:opacity-60',
+    'inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-bold text-on-accent cursor-pointer transition [&:not(:disabled):not([aria-disabled=true])]:hover:brightness-110 [&:not(:disabled):not([aria-disabled=true])]:active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60',
   ghost:
-    'inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-surface px-4 py-2.5 text-sm font-semibold text-text transition hover:border-muted hover:bg-raised disabled:opacity-60',
-  icon: 'inline-flex size-9 items-center justify-center rounded-lg border border-line bg-surface text-text transition hover:border-muted hover:bg-raised disabled:opacity-40',
+    'inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-surface px-4 py-2.5 text-sm font-semibold text-text cursor-pointer transition [&:not(:disabled):not([aria-disabled=true])]:hover:border-accent [&:not(:disabled):not([aria-disabled=true])]:hover:bg-raised disabled:cursor-not-allowed disabled:opacity-60',
+  icon: 'inline-flex size-9 items-center justify-center rounded-lg border border-line bg-surface text-text cursor-pointer transition [&:not(:disabled):not([aria-disabled=true])]:hover:border-accent [&:not(:disabled):not([aria-disabled=true])]:hover:bg-raised disabled:cursor-not-allowed disabled:opacity-40',
 }
 
 export const field =
