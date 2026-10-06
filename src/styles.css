@@ -127,12 +127,12 @@ body {
 .skeleton {
   background: linear-gradient(
     100deg,
-    var(--raised) 30%,
-    color-mix(in oklab, var(--raised), var(--text) 6%) 50%,
-    var(--raised) 70%
+    color-mix(in oklab, var(--surface), var(--raised) 55%) 35%,
+    color-mix(in oklab, var(--raised), var(--text) 5%) 50%,
+    color-mix(in oklab, var(--surface), var(--raised) 55%) 65%
   );
   background-size: 300% 100%;
-  animation: shimmer 1.4s ease-in-out infinite;
+  animation: shimmer 2s linear infinite;
 }
 
 @keyframes shimmer {
