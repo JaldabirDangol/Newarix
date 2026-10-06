@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { imageUrl } from '#/lib/images'
 import { Link, useRouter } from '@tanstack/react-router'
 import {
@@ -40,6 +40,14 @@ export function Img({
   const [failed, setFailed] = useState<string | null>(null)
   const [original, setOriginal] = useState<string | null>(null)
   const useOriginal = original === src
+  const image = useRef<HTMLImageElement>(null)
+  useEffect(() => {
+    // An SSR image can fail before hydration attaches its error handler.
+    if (!src || !image.current?.complete || image.current.naturalWidth > 0)
+      return
+    if (!useOriginal && imageUrl(src) !== src) setOriginal(src)
+    else setFailed(src)
+  }, [src, useOriginal])
   if (!src || failed === src) {
     return (
       <div
@@ -54,6 +62,7 @@ export function Img({
   }
   return (
     <img
+      ref={image}
       src={useOriginal ? src : imageUrl(src)}
       srcSet={
         useOriginal
