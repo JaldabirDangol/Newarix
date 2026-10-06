@@ -82,7 +82,7 @@ export function AuthForm({
       </div>
       {initialError && <p role="alert" className="mb-4 text-sm text-danger">{initialError}</p>}
       {google && <><a href="/api/auth/google" className={`${btn.ghost} mb-4`}>Continue with Google</a><p className="mb-4 text-center text-xs text-muted">or use your email</p></>}
-      <form onSubmit={submit} noValidate className="flex flex-col gap-4">
+      <form method="post" onSubmit={submit} noValidate className="flex flex-col gap-4">
         {fields.map((f) => {
           const invalid = error?.field === f.name
           return (
