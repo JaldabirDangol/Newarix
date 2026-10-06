@@ -257,27 +257,6 @@ export function DetailPage({
             </InfoRow>
             <InfoRow label="Japanese">{media.titleJapanese}</InfoRow>
           </dl>
-          {media.kind === 'anime' && media.streaming.length > 0 && (
-            <div>
-              <h2 className="mb-2 text-xs font-semibold tracking-wider text-muted uppercase">
-                Where to watch
-              </h2>
-              <ul className="flex flex-wrap gap-2">
-                {media.streaming.map((s) => (
-                  <li key={s.url}>
-                    <a
-                      href={s.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1 rounded-full border border-line px-3 py-1 text-xs font-semibold hover:border-muted"
-                    >
-                      {s.name} <ExternalLink className="size-3" aria-hidden />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </aside>
 
         <div className="min-w-0 lg:pt-36">
