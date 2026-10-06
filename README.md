@@ -17,6 +17,16 @@ The production CSP permits `https://megavid.buzz` frames. The iframe is sandboxe
 
 The embed URL format was checked against [MiruroAPI's provider implementation](https://github.com/Shineii86/MiruroAPI/blob/main/src/helpers/pipe.js). `e2e/streaming.spec.ts` exercises the controls and provider error messages using an intercepted player response; it does not verify live provider uptime.
 
+## Manga reading
+
+Manga detail pages automatically load available chapters using the free MangaDex API. Titles are matched by MyAnimeList or AniList ID after a title search, with a unique exact alternate-title fallback when catalog links are missing. Ambiguous matches remain unavailable. Readers can choose a language, load more chapters, open a full-screen page reader, and navigate pages and chapters. The reader saves the latest chapter and page in this browser, including for guests. Account chapter totals remain controlled by the existing tracker.
+
+MangaDex and scanlation groups are credited in the chapter list and reader. Chapters hosted externally open on the provider's site. Missing chapters, unavailable languages, and image failures show recovery options. Image pages load through a bounded backend route using chapter identity and page number. The route prefers smaller images and retries the original format when needed; the app caches and rate-limits API metadata through its existing Redis/memory store. No MangaDex API key is needed.
+
+The [MangaDex API usage policy](https://gitlab.com/mangadex-pub/mangadex-api-docs/-/blob/main/index.md) requires attribution, no ads or paid services, and honoring scanlation group removal requests. Set `MANGADEX_BLOCKED_GROUPS` to a comma-separated list of group UUIDs to hide and block their chapters, then restart or redeploy. Chapter availability depends on MangaDex; complete coverage of every catalog title is not guaranteed.
+
+`e2e/manga-reader.spec.ts` checks chapter navigation, browser bookmarks, mobile layout, accessibility, language empty states, publisher links, pagination, and image recovery against a local fixture. `MANGADEX_API_URL` is a local-test-only override; leave it unset for normal deployments.
+
 ## Quick start
 
 Requirements: Node 22+, Docker.

@@ -28,6 +28,7 @@ import { Route as ApiImgRouteImport } from './routes/api/img'
 import { Route as MangaIndexRouteImport } from './routes/manga/index'
 import { Route as MangaIdRouteImport } from './routes/manga/$id'
 import { Route as ApiAvatarIdRouteImport } from './routes/api/avatar/$id'
+import { Route as ApiMangaPageRouteImport } from './routes/api/manga/page'
 import { Route as ApiAuthGoogleIndexRouteImport } from './routes/api/auth/google/index'
 import { Route as ApiAuthGoogleCallbackRouteImport } from './routes/api/auth/google/callback'
 
@@ -125,6 +126,11 @@ const ApiAvatarIdRoute = ApiAvatarIdRouteImport.update({
   path: '/api/avatar/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiMangaPageRoute = ApiMangaPageRouteImport.update({
+  id: '/api/manga/page',
+  path: '/api/manga/page',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthGoogleIndexRoute = ApiAuthGoogleIndexRouteImport.update({
   id: '/api/auth/google/',
   path: '/api/auth/google/',
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/anime/': typeof AnimeIndexRoute
   '/manga/': typeof MangaIndexRoute
   '/api/avatar/$id': typeof ApiAvatarIdRoute
+  '/api/manga/page': typeof ApiMangaPageRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
   '/api/auth/google/': typeof ApiAuthGoogleIndexRoute
 }
@@ -177,6 +184,7 @@ export interface FileRoutesByTo {
   '/anime': typeof AnimeIndexRoute
   '/manga': typeof MangaIndexRoute
   '/api/avatar/$id': typeof ApiAvatarIdRoute
+  '/api/manga/page': typeof ApiMangaPageRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
   '/api/auth/google': typeof ApiAuthGoogleIndexRoute
 }
@@ -201,6 +209,7 @@ export interface FileRoutesById {
   '/anime/': typeof AnimeIndexRoute
   '/manga/': typeof MangaIndexRoute
   '/api/avatar/$id': typeof ApiAvatarIdRoute
+  '/api/manga/page': typeof ApiMangaPageRoute
   '/api/auth/google/callback': typeof ApiAuthGoogleCallbackRoute
   '/api/auth/google/': typeof ApiAuthGoogleIndexRoute
 }
@@ -225,6 +234,7 @@ export interface FileRouteTypes {
     | '/anime/'
     | '/manga/'
     | '/api/avatar/$id'
+    | '/api/manga/page'
     | '/api/auth/google/callback'
     | '/api/auth/google/'
   fileRoutesByTo: FileRoutesByTo
@@ -247,6 +257,7 @@ export interface FileRouteTypes {
     | '/anime'
     | '/manga'
     | '/api/avatar/$id'
+    | '/api/manga/page'
     | '/api/auth/google/callback'
     | '/api/auth/google'
   id:
@@ -270,6 +281,7 @@ export interface FileRouteTypes {
     | '/anime/'
     | '/manga/'
     | '/api/avatar/$id'
+    | '/api/manga/page'
     | '/api/auth/google/callback'
     | '/api/auth/google/'
   fileRoutesById: FileRoutesById
@@ -291,6 +303,7 @@ export interface RootRouteChildren {
   AnimeIndexRoute: typeof AnimeIndexRoute
   MangaIndexRoute: typeof MangaIndexRoute
   ApiAvatarIdRoute: typeof ApiAvatarIdRoute
+  ApiMangaPageRoute: typeof ApiMangaPageRoute
   ApiAuthGoogleCallbackRoute: typeof ApiAuthGoogleCallbackRoute
   ApiAuthGoogleIndexRoute: typeof ApiAuthGoogleIndexRoute
 }
@@ -430,6 +443,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAvatarIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/manga/page': {
+      id: '/api/manga/page'
+      path: '/api/manga/page'
+      fullPath: '/api/manga/page'
+      preLoaderRoute: typeof ApiMangaPageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/google/': {
       id: '/api/auth/google/'
       path: '/api/auth/google'
@@ -478,6 +498,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnimeIndexRoute: AnimeIndexRoute,
   MangaIndexRoute: MangaIndexRoute,
   ApiAvatarIdRoute: ApiAvatarIdRoute,
+  ApiMangaPageRoute: ApiMangaPageRoute,
   ApiAuthGoogleCallbackRoute: ApiAuthGoogleCallbackRoute,
   ApiAuthGoogleIndexRoute: ApiAuthGoogleIndexRoute,
 }

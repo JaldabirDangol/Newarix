@@ -5,6 +5,7 @@ import { displayTitle } from '#/lib/media'
 import { detailLink } from './media'
 import { RecommendationShelf } from './RecommendationShelf'
 import { DetailTabs } from './DetailTabs'
+import { MangaReader } from './MangaReader'
 import { TrackerPanel } from './tracking'
 import { Container, Img, RowSkeleton, SectionHeading, formatNumber } from './ui'
 import type {
@@ -343,6 +344,10 @@ export function DetailPage({
             </h2>
             <Synopsis text={media.synopsis} />
           </section>
+
+          {media.kind === 'manga' && (
+            <MangaReader key={media.id} media={media} />
+          )}
 
           <DetailTabs
             initialEpisode={initialEpisode}

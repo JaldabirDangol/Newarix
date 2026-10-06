@@ -10,6 +10,7 @@
 //   GET  /__mail?email=...    emails captured for an address
 // Fixed ids: MAL id 99998 answers 503 (outage); ids >= 99999 are not found.
 import http from 'node:http'
+import { answerMangaDex } from './mock-mangadex.mjs'
 
 const PORT = Number(process.env.MOCK_PORT ?? process.env.MOCK_JIKAN_PORT ?? 4545)
 const GENRES = ['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 'Romance', 'Sci-Fi', 'Slice of Life', 'Mystery', 'Sports', 'Supernatural', 'Thriller']
@@ -207,6 +208,7 @@ http
       res.writeHead(status, { 'content-type': 'application/json' })
       res.end(JSON.stringify(body))
     }
+    if (answerMangaDex(url, json, res)) return
     if (url.pathname === '/emails' && req.method === 'POST') {
       mail.push(JSON.parse(await readBody(req)))
       return json(200, { id: `test-${mail.length}` })

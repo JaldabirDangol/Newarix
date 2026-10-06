@@ -27,7 +27,10 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], channel: process.env.PW_CHANNEL ?? 'chromium' },
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: process.env.PW_CHANNEL ?? 'chromium',
+      },
     },
   ],
   webServer: [
@@ -49,6 +52,7 @@ export default defineConfig({
         REDIS_URL: E2E_REDIS,
         JWT_SECRET: 'e2e-secret-that-is-long-enough-for-production-checks',
         ANILIST_URL: `http://localhost:${MOCK_PORT}/graphql`,
+        MANGADEX_API_URL: `http://localhost:${MOCK_PORT}/mangadex`,
         APP_URL: `http://localhost:${PORT}`,
         RESEND_API_KEY: 'test-email-key',
         EMAIL_FROM: 'Newarix <test@example.com>',
