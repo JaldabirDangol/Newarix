@@ -212,7 +212,7 @@ export function Navbar({ user }: { user: SessionUser | null }) {
               <Link
                 to="/login"
                 search={{ redirect: location.href }}
-                className={`${btn.ghost} py-2`}
+                className={`${btn.ghost} cursor-pointer py-2 hover:border-accent hover:text-accent-text`}
               >
                 Log in
               </Link>
@@ -255,7 +255,7 @@ export function Navbar({ user }: { user: SessionUser | null }) {
           </nav>
           {!user && (
             <div className="mt-3 grid grid-cols-2 gap-2">
-              <Link to="/login" className={btn.ghost}>
+              <Link to="/login" className={`${btn.ghost} cursor-pointer hover:border-accent hover:text-accent-text`}>
                 Log in
               </Link>
               <Link to="/signup" className={btn.primary}>

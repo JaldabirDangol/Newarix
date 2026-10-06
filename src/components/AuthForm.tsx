@@ -124,7 +124,7 @@ export function AuthForm({
         )}
         <button
           type="submit"
-          className={`${btn.primary} mt-2 py-3`}
+          className={`${btn.primary} mt-2 cursor-pointer py-3 enabled:hover:brightness-110 disabled:cursor-not-allowed`}
           disabled={pending}
         >
           {pending && <Loader2 className="size-4 animate-spin" aria-hidden />}
