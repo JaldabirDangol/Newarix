@@ -86,7 +86,7 @@ export function MangaReader({ media }: { media: MangaDetail }) {
       data: {
         malId: media.id,
         anilistId:
-          Number(media.siteUrl.split('/').filter(Boolean).at(-1)) || undefined,
+          Number(media.siteUrl.match(/\/manga\/(\d+)/)?.[1]) || undefined,
         titles: [media.title, media.titleEnglish, media.titleJapanese]
           .filter((t): t is string => Boolean(t))
           .map((t) => t.slice(0, 300)),
@@ -164,7 +164,9 @@ export function MangaReader({ media }: { media: MangaDetail }) {
     let active = true
     setReading(null)
     setChapterError('')
-    void getReaderChapter({ data: { mangaId: match.id, chapterId: selected } })
+    void getReaderChapter({
+      data: { mangaId: match.id, chapterId: selected, fresh: chapterRetry > 0 },
+    })
       .then((data) => {
         if (!active) return
         if (!data.ok) {

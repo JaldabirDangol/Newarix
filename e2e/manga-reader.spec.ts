@@ -102,5 +102,7 @@ test('unmatched titles and failed page recovery', async ({ page }) => {
   fail = false
   await reader.getByRole('button', { name: 'Refresh chapter' }).click()
   await expect(reader.getByRole('img')).toBeVisible()
+  await expect(reader.getByRole('img')).toHaveJSProperty('complete', true)
+  await expect(reader.getByRole('img')).toHaveJSProperty('naturalWidth', 1)
   await expect(reader.getByText(/This page could not load/)).toHaveCount(0)
 })

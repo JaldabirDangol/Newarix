@@ -84,9 +84,13 @@ export function readerChapter(
 }
 
 const pending = new Map<string, Promise<unknown>>()
-async function request(path: string, ttl = 60_000): Promise<unknown> {
+async function request(
+  path: string,
+  ttl = 60_000,
+  fresh = false,
+): Promise<unknown> {
   const key = `mangadex:v1:${path}`
-  const cached = await store.get(key)
+  const cached = fresh ? null : await store.get(key)
   if (cached) return JSON.parse(cached)
   const existing = pending.get(key)
   if (existing) return existing
@@ -294,10 +298,20 @@ export function chapterImages(data: unknown, dataSaver = false) {
   })
 }
 
-export async function loadChapter(mangaId: string, chapterId: string) {
+export async function loadChapter(
+  mangaId: string,
+  chapterId: string,
+  fresh = false,
+) {
   const result = z
     .object({ data: chapterSchema })
-    .parse(await request(`/chapter/${chapterId}?includes[]=scanlation_group`))
+    .parse(
+      await request(
+        `/chapter/${chapterId}?includes[]=scanlation_group`,
+        60_000,
+        fresh,
+      ),
+    )
   if (
     !result.data.relationships.some(
       (r) => r.type === 'manga' && r.id === mangaId,
@@ -310,6 +324,7 @@ export async function loadChapter(mangaId: string, chapterId: string) {
   const pages = await request(
     `/at-home/server/${chapterId}?forcePort443=true`,
     30_000,
+    fresh,
   )
   return {
     chapter,
@@ -340,53 +355,56 @@ export async function loadChapterPage(
   chapterId: string,
   page: number,
 ) {
-  const chapter = await loadChapter(mangaId, chapterId)
-  if (!Number.isInteger(page) || page < 0 || page >= chapter.images.length)
-    throw new Error('This chapter page does not exist.')
-  const sources = [
-    ...new Set(
-      [chapter.smallerImages?.[page], chapter.images[page]].filter(
-        (url): url is string => Boolean(url),
+  // At-home nodes can expire or become unavailable between page requests.
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const chapter = await loadChapter(mangaId, chapterId, attempt > 0)
+    if (!Number.isInteger(page) || page < 0 || page >= chapter.images.length)
+      throw new Error('This chapter page does not exist.')
+    const sources = [
+      ...new Set(
+        [chapter.smallerImages?.[page], chapter.images[page]].filter(
+          (url): url is string => Boolean(url),
+        ),
       ),
-    ),
-  ]
-  for (const source of sources) {
-    try {
-      const response = await fetch(source, {
-        redirect: 'error',
-        signal: AbortSignal.timeout(10_000),
-        headers: { 'User-Agent': 'Newarix/1.0 (MangaDex reader)' },
-      })
-      const type = response.headers.get('content-type')?.split(';')[0]
-      if (
-        !response.ok ||
-        !response.body ||
-        !type ||
-        !['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(type)
-      )
-        continue
-      const maxBytes = 4 * 1024 * 1024
-      if (Number(response.headers.get('content-length')) > maxBytes) {
-        await response.body.cancel()
-        continue
+    ]
+    for (const source of sources) {
+      try {
+        const response = await fetch(source, {
+          redirect: 'error',
+          signal: AbortSignal.timeout(10_000),
+          headers: { 'User-Agent': 'Newarix/1.0 (MangaDex reader)' },
+        })
+        const type = response.headers.get('content-type')?.split(';')[0]
+        if (
+          !response.ok ||
+          !response.body ||
+          !type ||
+          !['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(type)
+        )
+          continue
+        const maxBytes = 4 * 1024 * 1024
+        if (Number(response.headers.get('content-length')) > maxBytes) {
+          await response.body.cancel()
+          continue
+        }
+        const reader = response.body.getReader()
+        const parts: Uint8Array[] = []
+        let size = 0
+        while (size <= maxBytes) {
+          const chunk = await reader.read()
+          if (chunk.done) break
+          size += chunk.value.byteLength
+          parts.push(chunk.value)
+        }
+        if (size > maxBytes) {
+          await reader.cancel()
+          continue
+        }
+        if (!size) continue
+        return { bytes: Buffer.concat(parts), type }
+      } catch {
+        /* Try the alternate image format before failing. */
       }
-      const reader = response.body.getReader()
-      const parts: Uint8Array[] = []
-      let size = 0
-      while (size <= maxBytes) {
-        const chunk = await reader.read()
-        if (chunk.done) break
-        size += chunk.value.byteLength
-        parts.push(chunk.value)
-      }
-      if (size > maxBytes) {
-        await reader.cancel()
-        continue
-      }
-      if (!size) continue
-      return { bytes: Buffer.concat(parts), type }
-    } catch {
-      /* Try the alternate image format before failing. */
     }
   }
   throw new Error(

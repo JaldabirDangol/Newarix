@@ -32,10 +32,20 @@ export const getReaderChapters = createServerFn({ method: 'GET' })
 
 export const getReaderChapter = createServerFn({ method: 'GET' })
   .middleware([catalogMiddleware])
-  .validator(z.object({ mangaId: z.uuid(), chapterId: z.uuid() }))
+  .validator(
+    z.object({
+      mangaId: z.uuid(),
+      chapterId: z.uuid(),
+      fresh: z.boolean().optional(),
+    }),
+  )
   .handler(async ({ data }) => {
     try {
-      const reading = await loadChapter(data.mangaId, data.chapterId)
+      const reading = await loadChapter(
+        data.mangaId,
+        data.chapterId,
+        data.fresh,
+      )
       return {
         ok: true as const,
         chapter: reading.chapter,

@@ -1,3 +1,4 @@
+import { store } from './kv'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   chapterFeed,
@@ -11,7 +12,7 @@ import {
 
 vi.mock('./kv', () => ({
   store: {
-    get: async () => null,
+    get: vi.fn(async (): Promise<string | null> => null),
     set: async () => {},
     reserveSlot: async () => 0,
   },
@@ -41,6 +42,7 @@ const fetchMock = vi.fn()
 beforeEach(() => {
   vi.stubGlobal('fetch', fetchMock)
   fetchMock.mockReset()
+  vi.mocked(store.get).mockReset().mockResolvedValue(null)
 })
 afterEach(() => {
   vi.unstubAllGlobals()
@@ -168,6 +170,70 @@ describe('MangaDex reader', () => {
     )
   })
 
+  it('refreshes a cached image source once when both formats fail', async () => {
+    const pages = {
+      baseUrl: 'https://expired.mangadex.network',
+      chapter: {
+        hash: 'a'.repeat(32),
+        data: ['page.png'],
+        dataSaver: ['page.jpg'],
+      },
+    }
+    vi.mocked(store.get).mockImplementation(async (key) =>
+      JSON.stringify(key.includes('/at-home/') ? pages : { data: chapter }),
+    )
+    fetchMock.mockResolvedValueOnce(new Response('', { status: 503 }))
+    fetchMock.mockResolvedValueOnce(new Response('', { status: 404 }))
+    respond({ data: chapter })
+    respond({ ...pages, baseUrl: 'https://fresh.mangadex.network' })
+    fetchMock.mockResolvedValueOnce(
+      new Response(new Uint8Array([1, 2, 3]), {
+        headers: { 'Content-Type': 'image/jpeg' },
+      }),
+    )
+    expect(await loadChapterPage(mangaId, chapterId, 0)).toMatchObject({
+      type: 'image/jpeg',
+      bytes: Buffer.from([1, 2, 3]),
+    })
+    expect(String(fetchMock.mock.calls[3][0])).toContain('/at-home/server/')
+    expect(String(fetchMock.mock.calls[4][0])).toContain(
+      'fresh.mangadex.network',
+    )
+    expect(fetchMock).toHaveBeenCalledTimes(5)
+  })
+
+  it('stops after one fresh source retry when image delivery remains unavailable', async () => {
+    const pages = {
+      baseUrl: 'https://offline.mangadex.network',
+      chapter: { hash: 'a'.repeat(32), data: ['page.png'] },
+    }
+    for (let attempt = 0; attempt < 2; attempt++) {
+      respond({ data: chapter })
+      respond(pages)
+      fetchMock.mockResolvedValueOnce(new Response('', { status: 503 }))
+    }
+    await expect(loadChapterPage(mangaId, chapterId, 0)).rejects.toThrow(
+      'could not deliver this page',
+    )
+    expect(fetchMock).toHaveBeenCalledTimes(6)
+  })
+
+  it.skipIf(process.env.MANGADEX_LIVE !== '1')(
+    'opens the Berserk chapter shown in the failed reader screenshot',
+    async () => {
+      vi.unstubAllGlobals()
+      vi.stubEnv('MANGADEX_API_URL', 'https://api.mangadex.org')
+      const berserkId = '801513ba-a712-498c-8f57-cae55b38cc92'
+      const reportedChapterId = '0a2a4b71-cdc3-47a5-be49-bfd09d666968'
+      const reading = await loadChapter(berserkId, reportedChapterId)
+      expect(reading.images).toHaveLength(53)
+      const page = await loadChapterPage(berserkId, reportedChapterId, 0)
+      expect(page.bytes.length).toBeGreaterThan(1000)
+      expect(page.type).toMatch(/^image\//)
+    },
+    60_000,
+  )
+
   it.skipIf(process.env.MANGADEX_LIVE !== '1')(
     'opens the reported Fullmetal Alchemist chapter against live MangaDex',
     async () => {
@@ -176,10 +242,10 @@ describe('MangaDex reader', () => {
       expect(await matchManga(2, ['Berserk'])).not.toBeNull()
       const match = await matchManga(25, ['Fullmetal Alchemist'], 30025)
       expect(match).not.toBeNull()
-      const chapterId = '90c87477-123e-444c-8723-880ac9acb407'
-      const chapter = await loadChapter(match!.id, chapterId)
-      expect(chapter.images).toHaveLength(43)
-      const page = await loadChapterPage(match!.id, chapterId, 0)
+      const reportedChapterId = '90c87477-123e-444c-8723-880ac9acb407'
+      const reportedChapter = await loadChapter(match!.id, reportedChapterId)
+      expect(reportedChapter.images).toHaveLength(43)
+      const page = await loadChapterPage(match!.id, reportedChapterId, 0)
       expect(page.bytes.length).toBeGreaterThan(1000)
       expect(page.type).toMatch(/^image\//)
     },

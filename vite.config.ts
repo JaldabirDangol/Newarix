@@ -11,7 +11,12 @@ const config = defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: [
     devtools(),
-    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
+    nitro({
+      rollupConfig: { external: [/^@sentry\//] },
+      // Explicitly route API requests before Nitro's dev asset detection.
+      // Browser image requests otherwise skip the TanStack SSR handler.
+      routes: { '/api/**': './src/server/nitro-api.ts' },
+    }),
     tailwindcss(),
     tanstackStart(),
     viteReact(),
