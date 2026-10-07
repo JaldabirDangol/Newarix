@@ -6,7 +6,6 @@ type Event =
   | 'password_reset_requested'
   | 'password_changed'
   | 'rate_limited'
-  | 'redis_security_unavailable'
 const windows = new Map<Event, { at: number; suppressed: number }>()
 export function securityEvent(event: Event) {
   const now = Date.now()

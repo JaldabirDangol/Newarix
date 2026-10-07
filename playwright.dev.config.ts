@@ -5,6 +5,7 @@ const port = 3101
 export default defineConfig({
   testDir: 'e2e',
   testMatch: 'image-routing.spec.ts',
+  outputDir: 'test-results-dev',
   workers: 1,
   use: {
     baseURL: `http://localhost:${port}`,

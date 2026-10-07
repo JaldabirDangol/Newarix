@@ -18,11 +18,16 @@ export const env = {
     return secret
   },
   anilistUrl: process.env.ANILIST_URL ?? 'https://graphql.anilist.co',
-  redisUrl: process.env.REDIS_URL || null,
   get appUrl() {
-    const value = process.env.APP_URL ?? (this.isProd ? required('APP_URL') : 'http://localhost:3000')
+    const value =
+      process.env.APP_URL ??
+      (this.isProd ? required('APP_URL') : 'http://localhost:3000')
     const url = new URL(value)
-    if (!['http:', 'https:'].includes(url.protocol) || (this.isProd && url.protocol !== 'https:' && url.hostname !== 'localhost')) throw new Error('APP_URL must be an HTTPS app origin')
+    if (
+      !['http:', 'https:'].includes(url.protocol) ||
+      (this.isProd && url.protocol !== 'https:' && url.hostname !== 'localhost')
+    )
+      throw new Error('APP_URL must be an HTTPS app origin')
     return url.origin
   },
   emailApiKey: process.env.RESEND_API_KEY || null,

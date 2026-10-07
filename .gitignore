@@ -17,4 +17,5 @@ __unconfig*
 todos.json
 .vercel
 test-results
+test-results-dev
 playwright-report

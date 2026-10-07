@@ -1,5 +1,7 @@
 # Research notes
 
+> Historical notes from the Redis-enabled main branch. On `no-redis`, Redis is removed; caches and rate limits use bounded process memory, reset on restart, and are independent across instances. See the branch README for current setup.
+
 ## Jikan API v4
 
 Source: the official OpenAPI spec (`jikan-me/jikan-rest`, `storage/api-docs/api-docs.json`), which backs https://docs.api.jikan.moe/.

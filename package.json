@@ -32,7 +32,6 @@
     "@tanstack/react-start": "1.168.60",
     "dotenv": "^18.0.5",
     "drizzle-orm": "^0.45.3",
-    "ioredis": "^5.11.1",
     "jose": "^6.2.12",
     "lucide-react": "^1.52.0",
     "nitro": "3.0.260610-beta",

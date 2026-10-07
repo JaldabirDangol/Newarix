@@ -1,5 +1,7 @@
 # Endpoint review
 
+> Historical notes from the Redis-enabled main branch. On `no-redis`, Redis is removed; caches and rate limits use bounded process memory, reset on restart, and are independent across instances. See the branch README for current setup.
+
 All app requests pass the server entry guard: URI ≤8 KiB, actual streamed body ≤6 MiB, body-read deadline 15 seconds, compressed bodies rejected. Static assets are served by Nitro and need provider/server header and connection-limit verification. All unsafe app methods require CSRF metadata; OAuth callback is an intentional GET exception protected by state, nonce and PKCE. No credentialed wildcard CORS policy was found. SSR/RPC responses default to private/no-store; only successfully served public images opt into public caching.
 
 Limits below count attempted calls, including invalid login submissions after schema parsing. Security counters are atomic in Redis. Production Redis command failures deny guarded calls. Without REDIS_URL, counters are bounded but local to each process; limits reset on restart. Peer IP comes from h3's trusted request context, not arbitrary forwarding headers. Deployment must provide trustworthy end-user IPs or NAT/proxy users will share a budget.

@@ -17,8 +17,6 @@ export default defineConfig({
     env: {
       DATABASE_URL: process.env.TEST_DATABASE_URL ?? TEST_DB,
       JWT_SECRET: 'test-secret-that-is-long-enough-for-production-checks',
-      // Unit tests use the in-memory store; Redis tests connect explicitly.
-      REDIS_URL: '',
     },
   },
 })

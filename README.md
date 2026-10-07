@@ -1,12 +1,14 @@
 # Newarix
 
+This `no-redis` branch uses a bounded in-memory cache and rate-limit store. No Redis service or configuration is needed. Accounts and reading history remain in Postgres.
+
 Discover anime and manga, follow the weekly airing schedule, and track every episode and chapter you get through.
 
 Catalog data comes from [Jikan](https://jikan.moe) (an unofficial MyAnimeList API). Accounts, lists, history and favorites live in your own Postgres database.
 
 The current security review, hardening changes, deployment actions and verification limits are documented in the [security report](docs/security/report.md). The Compose setup uses development credentials and is for local use; existing containers must be recreated in a planned window to apply its loopback-only port bindings.
 
-- **Stack:** TanStack Start (React 19, file-based routing, server functions) · Tailwind CSS v4 · Postgres 17 · Redis · Drizzle ORM · JWT sessions (`jose`) · Zod · Vitest · Playwright
+- **Stack:** TanStack Start (React 19, file-based routing, server functions) · Tailwind CSS v4 · Postgres 17 · Drizzle ORM · JWT sessions (`jose`) · Zod · Vitest · Playwright
 - **Research notes and future ideas:** [`docs/research.md`](docs/research.md)
 
 ## Episode playback
@@ -21,7 +23,7 @@ The embed URL format was checked against [MiruroAPI's provider implementation](h
 
 Manga detail pages automatically load available chapters using the free MangaDex API. Titles are matched by MyAnimeList or AniList ID after a title search, with a unique exact alternate-title fallback when catalog links are missing. Ambiguous matches remain unavailable. Readers can choose a language, load more chapters, open a full-screen page reader, and navigate pages and chapters. The reader saves the latest chapter and page in this browser, including for guests. Account chapter totals remain controlled by the existing tracker.
 
-MangaDex and scanlation groups are credited in the chapter list and reader. Chapters hosted externally open on the provider's site. Missing chapters, unavailable languages, and image failures show recovery options. Image pages load through a bounded backend route using chapter identity and page number. The route prefers smaller images and retries the original format when needed; the app caches and rate-limits API metadata through its existing Redis/memory store. No MangaDex API key is needed.
+MangaDex and scanlation groups are credited in the chapter list and reader. Chapters hosted externally open on the provider's site. Missing chapters, unavailable languages, and image failures show recovery options. Image pages load through a bounded backend route using chapter identity and page number. The route prefers smaller images and retries the original format when needed; the app caches and rate-limits API metadata through its bounded in-memory store. No MangaDex API key is needed.
 
 The [MangaDex API usage policy](https://gitlab.com/mangadex-pub/mangadex-api-docs/-/blob/main/index.md) requires attribution, no ads or paid services, and honoring scanlation group removal requests. Set `MANGADEX_BLOCKED_GROUPS` to a comma-separated list of group UUIDs to hide and block their chapters, then restart or redeploy. Chapter availability depends on MangaDex; complete coverage of every catalog title is not guaranteed.
 
@@ -34,21 +36,20 @@ Requirements: Node 22+, Docker.
 ```bash
 cp .env.example .env          # then set JWT_SECRET (command is in the file)
 npm install
-npm run db:up                 # Postgres on localhost:15434, Redis on localhost:16379
+npm run db:up                 # Postgres on localhost:15434
 npm run db:migrate            # applies drizzle/*.sql
 npm run dev                   # http://localhost:3000 (or the next free port)
 ```
 
 ### Environment variables
 
-| Name             | Required | Notes                                                                                                                                                 |
-| ---------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DATABASE_URL`   | yes      | `postgres://newarix:newarix@localhost:15434/newarix` for the Docker DB                                                                                |
-| `JWT_SECRET`     | yes      | Signs session tokens. At least 32 random characters in production.                                                                                    |
-| `JIKAN_BASE_URL` | no       | Defaults to `https://api.jikan.moe/v4`. Point it at a self-hosted Jikan if you run one.                                                               |
-| `REDIS_URL`      | no       | Shared Jikan cache and rate limits. `redis://localhost:16379` for the Docker Redis; Upstash works too (`rediss://…`). Unset means per-process memory. |
-| `DB_POOL_MAX`    | no       | Postgres pool size. Defaults to 1 on Vercel, 10 elsewhere.                                                                                            |
-| `DB_PREPARE`     | no       | `true`/`false` for prepared statements. Defaults to off on Vercel (needed for transaction-mode poolers).                                              |
+| Name             | Required | Notes                                                                                                    |
+| ---------------- | -------- | -------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`   | yes      | `postgres://newarix:newarix@localhost:15434/newarix` for the Docker DB                                   |
+| `JWT_SECRET`     | yes      | Signs session tokens. At least 32 random characters in production.                                       |
+| `JIKAN_BASE_URL` | no       | Defaults to `https://api.jikan.moe/v4`. Point it at a self-hosted Jikan if you run one.                  |
+| `DB_POOL_MAX`    | no       | Postgres pool size. Defaults to 1 on Vercel, 10 elsewhere.                                               |
+| `DB_PREPARE`     | no       | `true`/`false` for prepared statements. Defaults to off on Vercel (needed for transaction-mode poolers). |
 
 ### Scripts
 
@@ -56,12 +57,12 @@ npm run dev                   # http://localhost:3000 (or the next free port)
 | ------------------------------------ | -------------------------------------------------------------- |
 | `npm run dev`                        | Dev server with HMR                                            |
 | `npm run build` / `npm run preview`  | Production build (Nitro) and local preview                     |
-| `npm run db:up`                      | Start the Postgres and Redis containers                        |
+| `npm run db:up`                      | Start the Postgres containers                                  |
 | `npm run db:generate`                | Create a new migration after editing `src/server/db/schema.ts` |
 | `npm run db:migrate`                 | Apply pending migrations                                       |
 | `npm run db:studio`                  | Browse the database in Drizzle Studio                          |
 | `npm run typecheck` / `npm run lint` | Type and lint checks                                           |
-| `npm test`                           | Unit + integration tests (needs the Docker Postgres and Redis) |
+| `npm test`                           | Unit + integration tests (needs the Docker Postgres)           |
 | `npm run test:e2e`                   | Playwright tests against a production build and a mock Jikan   |
 | `npm run test:live`                  | Contract test against the real Jikan API                       |
 
@@ -91,18 +92,18 @@ src/
     filters.ts, status.ts     shared enums, labels, search-param schemas
   server/                     server-only code (never shipped to the browser)
     env.ts                    env validation
-    kv.ts                     Redis store (memory fallback): cache, rate limits
+    kv.ts                     Bounded memory store: cache, rate limits
     security.ts               CSP and security headers
     db/schema.ts, db/index.ts Drizzle schema + pooled client
     auth/                     scrypt hashing, JWT cookie session, middleware, rate limit
     jikan/client.ts           Jikan proxy: rate limit, retry, cache
     tracking.ts               list-entry rules + history recording
   start.ts                    global middleware: CSRF check, security headers
-tests/integration/            tracking rules (real Postgres), Redis store
+tests/integration/            tracking rules (real Postgres)
 tests/live/                   Jikan contract test (opt-in)
 e2e/                          Playwright specs + mock Jikan server
 drizzle/                      generated SQL migrations (0000_init.sql is the full schema)
-docker-compose.yml            local Postgres + Redis
+docker-compose.yml            local Postgres
 ```
 
 ## How it works
@@ -111,10 +112,10 @@ docker-compose.yml            local Postgres + Redis
 
 The browser never calls Jikan directly. Every request goes through server functions to one server-side client that:
 
-- **Throttles** every call: at most 3 per second and 55 per minute (Jikan allows 60), with at least 350 ms between requests. The request log lives in Redis and is updated by an atomic Lua script, so all server instances share one budget.
+- **Throttles** every call: at most 3 per second and 55 per minute (Jikan allows 60), with at least 350 ms between requests. The request log lives in memory, so callers within one server process share one budget.
 - **Retries** 429 and 5xx responses with exponential backoff (1 s, 2 s, 4 s plus jitter), honoring `Retry-After`. Timeouts get one retry, so a hung Jikan fails in seconds rather than a minute.
-- **Caches** in Redis with a TTL per endpoint: top lists, seasons and schedules for 1 hour, detail pages for 24 hours, searches for 15 minutes, and genres for 7 days. Identical in-flight requests are shared. When Jikan is down, an expired copy is served instead of an error.
-- **Degrades** to a per-process memory store if Redis is unset or unreachable, so a Redis outage never takes the site down.
+- **Caches** in bounded per-process memory with a TTL per endpoint: top lists, seasons and schedules for 1 hour, detail pages for 24 hours, searches for 15 minutes, and genres for 7 days. Identical in-flight requests are shared. When Jikan is down, an expired copy is served instead of an error.
+- **Resets** caches and rate-limit counters on process restart. Multiple server processes have independent budgets.
 - **Trims** responses (`src/lib/media.ts`) so pages only carry the fields they render.
 
 Detail pages render as soon as the main record arrives. Characters and recommendations stream in afterwards, so a slow sub-request never blocks the page.
@@ -125,7 +126,7 @@ Detail pages render as soon as the main record arrives. Characters and recommend
 - On login, the server issues an HS256 JWT (30 days) in an `httpOnly`, `SameSite=Lax` cookie (`Secure` in production).
 - Each request verifies the token, then loads the user, so a deleted account loses access immediately.
 - `authMiddleware` guards every server function that reads or writes a user's own data. The `_auth` layout route redirects logged-out visitors to `/login?redirect=…`, and the redirect only follows same-site paths.
-- Login and signup are rate-limited per IP (and per email for login), with counters in Redis.
+- Login and signup are rate-limited per IP (and per email for login), with bounded counters in process memory.
 
 ### Security (`src/start.ts`, `src/server/security.ts`)
 
@@ -142,7 +143,7 @@ Detail pages render as soon as the main record arrives. Characters and recommend
 ## Testing
 
 ```bash
-npm run db:up                         # Postgres + Redis
+npm run db:up                         # Postgres
 npm test                              # 51 unit + integration tests
 npx playwright install chromium       # once (or PW_CHANNEL=chrome to use installed Chrome)
 npm run test:e2e                      # 20 browser tests
@@ -150,7 +151,7 @@ npm run test:live                     # real Jikan API; run when it's reachable
 ```
 
 - **Unit:** rate-limit maths, memory store, Jikan client (cache, retry/backoff, Retry-After, stale-on-error, 404 handling, request spacing), security headers, password hashing, and the Jikan mappers.
-- **Integration:** tracking rules against a real `newarix_test` database (created and migrated automatically), and the Redis store, including atomic slot reservation under concurrent callers.
+- **Integration:** tracking rules against a real `newarix_test` database (created and migrated automatically). Memory-store tests cover atomic slot reservation under concurrent callers within one process.
 - **End-to-end:** builds the production server and runs it against `e2e/mock-jikan.mjs` and a `newarix_e2e` database. It covers signup, tracking, history, profile, search, schedule, theme, mobile overflow and logout. It also checks that CSP produces no console errors and that cross-site POSTs get a 403.
 - **Live contract:** calls the real Jikan endpoints and validates every field the mappers read (with Zod), so API drift shows up as a clear failure.
 
@@ -161,10 +162,10 @@ The mock Jikan also works for offline development: run `node e2e/mock-jikan.mjs`
 The Vercel build is verified locally (`NITRO_PRESET=vercel npm run build` produces `.vercel/output` with a Node 24 streaming function), and the full e2e suite passes with `VERCEL=1` (serverless DB pool settings).
 
 1. **Database:** create a managed Postgres (Neon, Supabase…). Use its **pooled** connection string as `DATABASE_URL`. The app uses a pool of 1 and no prepared statements on Vercel, which suits transaction-mode poolers.
-2. **Redis:** create an Upstash Redis database and set `REDIS_URL` to its `rediss://…` URL. This shares the cache and rate limits across instances. Without it, each instance has its own memory cache and its own Jikan budget.
+2. **Process-local state:** this branch uses memory for caching and rate limits. Each instance has its own request budget; counters reset on restart. Prefer a single long-running server when a shared upstream budget is required.
 3. **Migrations:** run them from your machine with `DATABASE_URL=<prod url> npm run db:migrate`.
 4. **Project:** import the repo in Vercel. Nitro detects Vercel automatically; if it doesn't, set `NITRO_PRESET=vercel`.
-5. **Environment:** set `DATABASE_URL`, `JWT_SECRET` (48+ random characters) and `REDIS_URL`.
+5. **Environment:** set `DATABASE_URL`, `JWT_SECRET` (48+ random characters).
 6. **Check:** after deploying, run `curl -I https://<your-app>/` and confirm the `content-security-policy` and `strict-transport-security` headers are present.
 
 Elsewhere (Render, Fly, a VPS): `npm run build && node .output/server/index.mjs`.

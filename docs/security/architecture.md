@@ -1,5 +1,7 @@
 # Security architecture map
 
+> Historical notes from the Redis-enabled main branch. On `no-redis`, Redis is removed; caches and rate limits use bounded process memory, reset on restart, and are independent across instances. See the branch README for current setup.
+
 Audit date: 2026-10-06. Scope: this repository, installed dependency metadata, and isolated local tests. No requests to third-party application endpoints or live production were authorized as test targets.
 
 Browser → TanStack Start request middleware (CSRF/security headers) → React SSR / server functions / four API routes → Drizzle parameterized queries → PostgreSQL. Redis shares catalog caches and rate counters; memory fallback exists. Nitro builds the Node server with Vite. Language: TypeScript/JavaScript; React 19, TanStack Router/Start, Tailwind.

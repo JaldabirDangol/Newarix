@@ -1,5 +1,7 @@
 # Security validation
 
+> Historical notes from the Redis-enabled main branch. On `no-redis`, Redis is removed; caches and rate limits use bounded process memory, reset on restart, and are independent across instances. See the branch README for current setup.
+
 Date: 2026-10-06. Controlled local checks only; no production/third-party exploit or stress tests.
 
 | Check                                     | Result                                                                                                                |

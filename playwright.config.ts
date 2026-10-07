@@ -5,11 +5,10 @@ const MOCK_PORT = 4545
 const E2E_DB =
   process.env.E2E_DATABASE_URL ??
   'postgres://newarix:newarix@localhost:15434/newarix_e2e'
-const E2E_REDIS = process.env.E2E_REDIS_URL ?? 'redis://localhost:16379/14'
 
 /**
  * End-to-end tests run against the production build (so CSP and CSRF are
- * exercised) with a mock AniList. Needs the docker-compose Postgres and Redis.
+ * exercised) with a mock AniList. Needs the docker-compose Postgres.
  * Uses system Chrome when PW_CHANNEL=chrome; otherwise `npx playwright install chromium`.
  */
 export default defineConfig({
@@ -44,12 +43,12 @@ export default defineConfig({
       command: 'npm run build && node .output/server/index.mjs',
       url: `http://localhost:${PORT}`,
       timeout: 180_000,
-      reuseExistingServer: !process.env.CI,
+      // Start fresh so process-local caches and rate counters reset each run.
+      reuseExistingServer: false,
       env: {
         PORT: String(PORT),
         NODE_ENV: 'production',
         DATABASE_URL: E2E_DB,
-        REDIS_URL: E2E_REDIS,
         JWT_SECRET: 'e2e-secret-that-is-long-enough-for-production-checks',
         ANILIST_URL: `http://localhost:${MOCK_PORT}/graphql`,
         MANGADEX_API_URL: `http://localhost:${MOCK_PORT}/mangadex`,

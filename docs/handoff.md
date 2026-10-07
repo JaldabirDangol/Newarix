@@ -1,5 +1,7 @@
 # Newarix handoff
 
+> Historical notes from the Redis-enabled main branch. On `no-redis`, Redis is removed; caches and rate limits use bounded process memory, reset on restart, and are independent across instances. See the branch README for current setup.
+
 Read `README.md` first (setup, structure, how the Jikan layer and tracking rules work). Run with:
 
 ```bash

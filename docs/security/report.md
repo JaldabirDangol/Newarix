@@ -1,5 +1,7 @@
 # Newarix defensive security audit and hardening
 
+> Historical notes from the Redis-enabled main branch. On `no-redis`, Redis is removed; caches and rate limits use bounded process memory, reset on restart, and are independent across instances. See the branch README for current setup.
+
 Date: 2026-10-06. Scope: repository, reachable local test services, dependency registry/advisories, production build and isolated regression tests. No production or third-party penetration tests, credential disclosure, stress tests, deployment, secret rotation, or service recreation were performed.
 
 ## Executive summary

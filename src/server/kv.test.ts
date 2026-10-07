@@ -97,24 +97,13 @@ it('bounds cached bytes as well as entry count', async () => {
   expect(await store.get('oversized')).toBeNull()
 })
 
-it('fails production security counters closed while preserving cache fallback', async () => {
-  const { FallbackStore } = await import('./kv')
-  const { env } = await import('./env')
-  const original = env.isProd
-  env.isProd = true
-  const memory = new MemoryStore()
-  await memory.set('cached', 'safe', 60_000)
-  const failure = async () => {
-    throw new Error('sensitive provider details')
-  }
-  const store = new FallbackStore(
-    { get: failure, set: failure, hit: failure, reserveSlot: failure },
-    memory,
+it('reserves slots atomically for concurrent callers in one process', async () => {
+  const store = new MemoryStore(10, () => 0)
+  const waits = await Promise.all(
+    Array.from({ length: 10 }, () =>
+      store.reserveSlot('slots', { perSecond: 3, perMinute: 5, minGapMs: 0 }),
+    ),
   )
-  try {
-    expect(await store.hit('login', 60_000)).toBe(Infinity)
-    expect(await store.get('cached')).toBe('safe')
-  } finally {
-    env.isProd = original
-  }
+  expect(waits.filter((wait) => wait === 0)).toHaveLength(3)
+  expect(waits.filter((wait) => wait > 0)).toHaveLength(7)
 })

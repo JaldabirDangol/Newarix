@@ -8,11 +8,11 @@ import type { SlotLimits, Store } from '../kv'
  *
  * - Every request reserves a slot under AniList's rate limit. AniList allows
  *   90 requests/minute normally and 30 while in degraded mode, so the budget
- *   stays under 30. The slot log lives in the shared store, so with Redis all
- *   server instances share one budget.
+ *   stays under 30. The slot log lives in memory, so callers in one server
+ *   process share a budget.
  * - 429 and 5xx responses are retried with exponential backoff, honoring
  *   Retry-After. Timeouts get one retry.
- * - Responses are cached in the shared store with a TTL per query. If AniList
+ * - Responses are cached in the process memory store with a TTL per query. If AniList
  *   is down, an expired copy is served instead of an error.
  * - Identical in-flight requests within one process are shared.
  */
